@@ -10,11 +10,14 @@ public class KlipLoginUI : MonoBehaviour
     /*********** UI 요소 ***********/
     [SerializeField] private QRCodeImage qrCodeImage;
     [SerializeField] private TextMeshProUGUI statusText;
-
-    private void Start()
+    [SerializeField] private GameObject loginPanel;
+    
+    public void OnClickLoginButton()
     {
         StartCoroutine(IE_RequestAPI());
     }
+
+    #region Request API
 
     private IEnumerator IE_RequestAPI()
     {
@@ -55,8 +58,10 @@ public class KlipLoginUI : MonoBehaviour
 
             KlipLoginResponse response = JsonUtility.FromJson<KlipLoginResponse>(request.downloadHandler.text);
             qrCodeImage.GenerateQRCode(response.url);
+            
+            loginPanel.SetActive(false);
 
-            statusText.text = "Login QR Code";
+            statusText.text = "QR 코드를 스캔해주세요.";
             StartCoroutine(IE_RequestQRCode());
         }
     }
@@ -80,11 +85,9 @@ public class KlipLoginUI : MonoBehaviour
                 switch (response.status)
                 {
                     case "completed":
-                        statusText.text = "Login Success";
                         qrCodeImage.ClearQRCode();
                         yield break;
                     case "canceled":
-                        statusText.text = "Login Canceled";
                         qrCodeImage.ClearQRCode();
                         yield break;
                     case "error":
@@ -99,6 +102,8 @@ public class KlipLoginUI : MonoBehaviour
             }
         }
     }
+
+    #endregion
 }
 
 [System.Serializable]

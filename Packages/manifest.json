@@ -1,6 +1,8 @@
 {
   "dependencies": {
+    "com.manakhovn.figma_to_unity_importer": "https://github.com/ManakhovN/FigmaToUnityImporter.git?path=/Assets/FigmaImporter",
     "com.unity.collab-proxy": "2.7.1",
+    "com.unity.feature.2d": "2.0.1",
     "com.unity.feature.development": "1.0.1",
     "com.unity.render-pipelines.universal": "14.0.11",
     "com.unity.textmeshpro": "3.0.7",
