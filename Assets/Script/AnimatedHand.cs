@@ -19,7 +19,6 @@ public class AnimatedHand : MonoBehaviour
     {
         float triggerValue = PinchAnimationAction.action.ReadValue<float>();
         HandAnimator.SetFloat("Trigger", triggerValue);
-
         float gripValue = GripAnimationAction.action.ReadValue<float>();
         HandAnimator.SetFloat("Grip",gripValue);
     }
