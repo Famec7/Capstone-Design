@@ -38,8 +38,7 @@ public class QRCodeImage : MonoBehaviour
         texture.Apply();
         
         _qrCodeImage.texture = texture;
-        
-        this.gameObject.SetActive(true);
+        _qrCodeImage.enabled = true;
     }
     
     public void ClearQRCode()
