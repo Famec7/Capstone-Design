@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a65a8ee20b8e4904aac5c216b0c7b115, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HarvestData: {fileID: 0}
+  HarvestData: {fileID: 11400000, guid: 6cdac400e55af9e4db526d4cca9810df, type: 2}
 --- !u!64 &7418702817476442646
 MeshCollider:
   m_ObjectHideFlags: 0

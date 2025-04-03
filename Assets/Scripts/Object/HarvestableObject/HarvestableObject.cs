@@ -41,11 +41,17 @@ public class HarvestableObject : MonoBehaviour,IDamageable,ILootDrop
     {
         if (HarvestData != null && HarvestData.MaterialData != null)
         {
+            BaseItem item = ItemFactory.Instance.CreateItem(HarvestData.MaterialData.ItemName);
+            item.gameObject.transform.position = transform.position;
+            #if UNITY_EDITOR
             Debug.Log($"{gameObject.name} 채집 완료! {HarvestData.YieldAmount} x {HarvestData.MaterialData.ItemName} 지급");
+            #endif
         }
         else
         {
+#if UNITY_EDITOR
             Debug.LogWarning($"{gameObject.name}의 harvestData 또는 materialData가 할당되지 않았습니다.");
+#endif
         }
     }
 }
