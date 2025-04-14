@@ -21,4 +21,8 @@ public class StatEffectSettings
 
     [Header("갈증 0일 때 스태미나 회복 속도 저하")]
     public float staminaDecreasePerSecondWhileThristZero = 0.5f;
+
+    [Header("스태미나 사용 시 허기/갈증 감소량")]
+    public float hungerDecreasePerSecondWhileRunning = 10f;
+    public float thirstDecreasePerSecondWhileRunning = 10f;
 }
