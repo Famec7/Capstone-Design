@@ -9,7 +9,7 @@ public class StatModifier
     // 스탯 조정 함수
     public void Apply(Stat stat)
     {
-        if (stat.Type == Type)
+        if (stat.type == Type)
         {
             stat.Modify(Amount);
         }
