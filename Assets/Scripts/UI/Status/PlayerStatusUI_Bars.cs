@@ -26,8 +26,20 @@ public class PlayerStatusUI_Bars : MonoBehaviour
 
     void SetupBars(StatBarUI ui)
     {
+        if (playerStatus == null)
+        {
+            Debug.LogError($"[SetupBars] playerStatus is NULL for {ui.type}");
+            return;
+        }
+
         var stat = playerStatus.GetStat(ui.type);
-        if (stat == null) return;
+        if (stat == null)
+        {
+            Debug.LogError($"[SetupBars] Stat is NULL for {ui.type} in {playerStatus.name}");
+            return;
+        }
+
+        Debug.Log($"[SetupBars] Creating bars for {ui.type}, Max: {stat.maxValue}");
 
         int requiredBars = Mathf.CeilToInt(stat.maxValue / ui.valuePerBar);
 
@@ -41,6 +53,7 @@ public class PlayerStatusUI_Bars : MonoBehaviour
         for (int i = 0; i < requiredBars; i++)
         {
             var go = Instantiate(ui.barPrefab, ui.barParent);
+            Debug.Log($"[BarSpawn] Instantiated {ui.type} bar #{i} under {ui.barParent.name}");
             if (!go.TryGetComponent(out BlinkController blink))
                 blink = go.AddComponent<BlinkController>();
 
@@ -48,7 +61,7 @@ public class PlayerStatusUI_Bars : MonoBehaviour
             blink.filledSprite = ui.filledSprite;
             blink.blinkingSprite = ui.blinkingSprite;
             blink.emptySprite = ui.emptySprite;
-            blink.SetEmpty(); // 초기 상태는 empty
+            blink.SetEmpty(); 
         }
     }
 
@@ -80,11 +93,10 @@ public class PlayerStatusUI_Bars : MonoBehaviour
     void UpdateBlinkingBar(StatType type, int filledBars, StatBarUI ui, Stat stat)
     {
         int barCount = ui.barParent.childCount;
-        int blinkIndex = filledBars - 1; // 마지막으로 채워진 칸 (왼쪽부터 채워진다고 가정)
+        int blinkIndex = filledBars - 1; 
 
         if (blinkingBars.TryGetValue(type, out var prevBlink))
         {
-            // 만약 같은 위치에 있고, BlinkInterval도 동일하면 그대로 유지
             if (blinkIndex >= 0 && blinkIndex < barCount &&
                 ui.barParent.GetChild(blinkIndex).GetComponent<BlinkController>() == prevBlink)
             {
@@ -98,12 +110,10 @@ public class PlayerStatusUI_Bars : MonoBehaviour
                 return;
             }
 
-            // 위치가 다르면 깜빡임 중지
             prevBlink.StopBlink();
             blinkingBars[type] = null;
         }
 
-        // 새로 깜빡이게 할 칸이 존재하면 설정
         if (blinkIndex >= 0 && blinkIndex < barCount)
         {
             var newBlink = ui.barParent.GetChild(blinkIndex).GetComponent<BlinkController>();
