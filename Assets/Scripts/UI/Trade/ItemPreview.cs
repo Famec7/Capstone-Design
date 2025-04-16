@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ItemPreview : MonoBehaviour
+public class ItemPreview : MonoBehaviour, IPointerDownHandler
 {
     #region ItemPreview Elements
     public Image ItemImage;
@@ -17,7 +18,6 @@ public class ItemPreview : MonoBehaviour
     public TextMeshProUGUI DescriptionText;
     public TradeItemData Data;
     #endregion
-
     public void SetExpired()
     {
         BorderImage.gameObject.SetActive(true);
@@ -35,5 +35,12 @@ public class ItemPreview : MonoBehaviour
         TimeSpan timeDiff = DateTime.Now - Data.ListedTime;
         TimeText.text = timeDiff.ToString(@"hh\:mm\:ss");
       
+    }
+
+
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        TradeManager.Instance.DetailedDescriptionSection.SetDetailedDescriptionSection(Data);
     }
 }

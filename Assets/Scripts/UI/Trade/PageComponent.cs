@@ -22,8 +22,7 @@ public class PageComponent : MonoBehaviour
     }
 
     /// <summary>
-    /// 현재 선택된 페이지(currentPage, 1기준)를 중심으로 페이지 번호를 자연스럽게 구성합니다.
-    /// Prev, Next 버튼은 별도로 이미 존재한다고 가정합니다.
+    /// 현재 선택된 페이지(currentPage, 1기준)를 중심으로 페이지 번호를 구성하는 함수
     /// </summary>
     /// <param name="currentPage">현재 선택된 페이지 (1 기반)</param>
     public void UpdatePaginationButtons(int currentPage)
