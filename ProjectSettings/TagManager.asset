@@ -5,8 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Monster
-  - EscapePoint
-  - PlayerItem
+  - BackpackZone
   layers:
   - Default
   - TransparentFX
