@@ -539,17 +539,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83e4e6cca11330d4088d729ab4fc9d9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &147849419 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7322621724395589768, guid: 0bc64c0a4091fae46bb1a8c43190bb8f, type: 3}
-  m_PrefabInstance: {fileID: 5092235913182526006}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &187056750 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6235707272242362814, guid: c1754be30e813ed4080798385d27e52b, type: 3}
-  m_PrefabInstance: {fileID: 6887084177666016450}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &233169001
+--- !u!1 &98655533
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7355,50 +7345,12 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4412276887406388556, guid: 0bc64c0a4091fae46bb1a8c43190bb8f, type: 3}
   m_PrefabInstance: {fileID: 5092235913182526006}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 147849419}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 03a5df2202a8b96488c744be3bd0c33e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1251020581
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 147849419}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 919e39492806b334982b6b84c90dd927, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_System: {fileID: 1251020577}
-  m_TurnSpeed: 60
-  m_LeftHandTurnAction:
-    m_UseReference: 0
-    m_Action:
-      m_Name: Left Hand Turn
-      m_Type: 0
-      m_ExpectedControlType: Vector2
-      m_Id: 26958abe-3293-4acb-876d-956b0afa8b5f
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 0}
-  m_RightHandTurnAction:
-    m_UseReference: 1
-    m_Action:
-      m_Name: Right Hand Turn
-      m_Type: 0
-      m_ExpectedControlType: Vector2
-      m_Id: 84449de9-b8c9-49be-8923-0083d8d0c408
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: -6493913391331992944, guid: c348712bda248c246b8c49b3db54643f, type: 3}
 --- !u!114 &1252526366 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8165138688098910629, guid: 224bb3a2ad5b4e347b3e5357939bc85d, type: 3}
@@ -12503,7 +12455,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7115b3cc0cae87147942beb8821f35ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsRunning: 0
   effectSettings:
     hungerDecreasePerSecond: 5
     thirstDecreasePerSecond: 5
@@ -12567,54 +12518,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1946482259 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7342990560879794782, guid: aecf6a9f0835c494c90bd20796ac51d7, type: 3}
-  m_PrefabInstance: {fileID: 8643714752038072736}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1946482248}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bf296fc962d7184ab14ad1841598d5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1946482261 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3399023016062686292, guid: aecf6a9f0835c494c90bd20796ac51d7, type: 3}
-  m_PrefabInstance: {fileID: 8643714752038072736}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1946482248}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0cb9aa70a22847b5925ee5f067c10a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1946482263
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1946482248}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15a299ef9492a924abe0dc89dbc62209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MoveProvider: {fileID: 1946482259}
-  LeftTrigger:
-    m_UseReference: 1
-    m_Action:
-      m_Name: Left Trigger
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 926f5581-166a-4580-bacf-156711954f38
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: -5982496924579745919, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  BoostMultiplier: 2
 --- !u!114 &1948632051 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 261731993976130941, guid: e8935db2f77d79248903e100ca5ea000, type: 3}
@@ -13853,21 +13756,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4412276887406388556, guid: 0bc64c0a4091fae46bb1a8c43190bb8f, type: 3}
-      propertyPath: m_XROrigin
-      value: 
-      objectReference: {fileID: 1946482261}
     - target: {fileID: 4527288318230386286, guid: 0bc64c0a4091fae46bb1a8c43190bb8f, type: 3}
       propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4527288318230386286, guid: 0bc64c0a4091fae46bb1a8c43190bb8f, type: 3}
-      propertyPath: m_LeftHandSnapTurnAction.m_Reference
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4527288318230386286, guid: 0bc64c0a4091fae46bb1a8c43190bb8f, type: 3}
-      propertyPath: m_LeftHandSnapTurnAction.m_UseReference
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6592929003713661436, guid: 0bc64c0a4091fae46bb1a8c43190bb8f, type: 3}
       propertyPath: m_Name
@@ -13916,10 +13807,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7322621724395589768, guid: 0bc64c0a4091fae46bb1a8c43190bb8f, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1251020581}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bc64c0a4091fae46bb1a8c43190bb8f, type: 3}
 --- !u!1001 &5659574762520060079
 PrefabInstance:
@@ -14452,14 +14340,6 @@ PrefabInstance:
       propertyPath: m_System
       value: 
       objectReference: {fileID: 1251020577}
-    - target: {fileID: 7342990560879794782, guid: aecf6a9f0835c494c90bd20796ac51d7, type: 3}
-      propertyPath: m_MoveSpeed
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7342990560879794782, guid: aecf6a9f0835c494c90bd20796ac51d7, type: 3}
-      propertyPath: m_RightHandMoveAction.m_Reference
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 7670900416934444987, guid: aecf6a9f0835c494c90bd20796ac51d7, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -14606,9 +14486,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3164400574382110925, guid: aecf6a9f0835c494c90bd20796ac51d7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1946482257}
-    - targetCorrespondingSourceObject: {fileID: 3164400574382110925, guid: aecf6a9f0835c494c90bd20796ac51d7, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1946482263}
   m_SourcePrefab: {fileID: 100100000, guid: aecf6a9f0835c494c90bd20796ac51d7, type: 3}
 --- !u!4 &8643714752038072737 stripped
 Transform:
