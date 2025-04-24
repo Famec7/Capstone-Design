@@ -4,7 +4,6 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class HandPickup : MonoBehaviour
 {
-    [SerializeField] private Transform _handTransform;
     [SerializeField] private InputActionReference _gripAction;
     [SerializeField] private XRDirectInteractor _interactor;
 
