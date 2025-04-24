@@ -28,18 +28,14 @@ public class PlayerStatusUI_Bars : MonoBehaviour
     {
         if (playerStatus == null)
         {
-            Debug.LogError($"[SetupBars] playerStatus is NULL for {ui.type}");
             return;
         }
 
         var stat = playerStatus.GetStat(ui.type);
         if (stat == null)
         {
-            Debug.LogError($"[SetupBars] Stat is NULL for {ui.type} in {playerStatus.name}");
             return;
         }
-
-        Debug.Log($"[SetupBars] Creating bars for {ui.type}, Max: {stat.maxValue}");
 
         int requiredBars = Mathf.CeilToInt(stat.maxValue / ui.valuePerBar);
 
@@ -53,7 +49,6 @@ public class PlayerStatusUI_Bars : MonoBehaviour
         for (int i = 0; i < requiredBars; i++)
         {
             var go = Instantiate(ui.barPrefab, ui.barParent);
-            Debug.Log($"[BarSpawn] Instantiated {ui.type} bar #{i} under {ui.barParent.name}");
             if (!go.TryGetComponent(out BlinkController blink))
                 blink = go.AddComponent<BlinkController>();
 
