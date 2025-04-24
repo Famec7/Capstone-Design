@@ -8,7 +8,7 @@ public class StatusManager : MonoBehaviour
 
     public static StatusManager Instance { get; private set; }
 
-    public bool IsRunning { get; private set; }
+    public bool IsRunning;
 
     [Header("스탯 자동 감소/회복 설정")]
     [SerializeField] private StatEffectSettings effectSettings;
@@ -96,7 +96,7 @@ public class StatusManager : MonoBehaviour
     // 스태미나 조절
     private void HandleStamina()
     {
-        IsRunning = Input.GetKey(KeyCode.LeftShift);
+        //IsRunning = Input.GetKey(KeyCode.LeftShift);
 
         if (IsRunning)
         {
