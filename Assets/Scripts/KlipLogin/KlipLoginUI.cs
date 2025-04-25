@@ -21,7 +21,7 @@ public class KlipLoginUI : MonoBehaviour
 
     private IEnumerator IE_RequestAPI()
     {
-        const string url = "http://127.0.0.1:8000/api/klip/login/prepare/";
+        const string url = "http://13.125.167.56:8000/api/klip/auth/prepare/";
         UnityWebRequest request = UnityWebRequest.PostWwwForm(url, "");
         yield return request.SendWebRequest();
 
@@ -46,7 +46,7 @@ public class KlipLoginUI : MonoBehaviour
 
     private IEnumerator IE_RequestLogin()
     {
-        string url = "http://127.0.0.1:8000/api/klip/login/request/" + _requestKey + "/";
+        string url = "http://13.125.167.56:8000/api/klip/auth/request/" + _requestKey + "/";
         UnityWebRequest request = UnityWebRequest.Get(url);
         yield return request.SendWebRequest();
 
@@ -70,7 +70,7 @@ public class KlipLoginUI : MonoBehaviour
     {
         while (true)
         {
-            string url = "http://127.0.0.1:8000/api/klip/login/result/" + _requestKey + "/";
+            string url = "http://13.125.167.56:8000/api/klip/auth/result/" + _requestKey + "/";
             UnityWebRequest request = UnityWebRequest.Get(url);
             yield return request.SendWebRequest();
 
