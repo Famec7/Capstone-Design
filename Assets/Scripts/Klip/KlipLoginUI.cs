@@ -12,6 +12,8 @@ public class KlipLoginUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI statusText;
     [SerializeField] private GameObject loginPanel;
     
+    [SerializeField] private WalletAddress walletAddress;
+    
     public void OnClickLoginButton()
     {
         StartCoroutine(IE_RequestAPI());
@@ -86,6 +88,7 @@ public class KlipLoginUI : MonoBehaviour
                 {
                     case "completed":
                         qrCodeImage.ClearQRCode();
+                        walletAddress.Address = response.result.klaytn_address;
                         yield break;
                     case "canceled":
                         qrCodeImage.ClearQRCode();
