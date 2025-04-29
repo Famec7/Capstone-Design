@@ -27,8 +27,8 @@ public class BackPack : MonoBehaviour
     private InputActionReference _gripAction2;
     private void OnTriggerEnter(Collider other)
     {
-        if (!InventoryInteractionLock.CanInteract) return;
-
+        if (!InventoryInteractionLock.CanInteract || !InventoryManager.Instance.HasEmptySlot()) return;
+  
         bool grip = _gripAction1.action.ReadValue<float>() > 0.8f
                   || _gripAction2.action.ReadValue<float>() > 0.8f;
         if (!grip) return;

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryManager : Singleton<InventoryManager>
 {
@@ -17,6 +18,7 @@ public class InventoryManager : Singleton<InventoryManager>
 
     public void AddItem(BaseItem item)
     {
+
         for (int i = 0; i < _slots.Length; i++)
         {
             if (_slots[i].IsEmpty)
@@ -49,6 +51,7 @@ public class InventoryManager : Singleton<InventoryManager>
         foreach (var slot in _slots)
         {
             slot.Data = null;
+            slot.GetComponent<Image>().color = Color.black;
             slot.BorderImage.color = Color.black;
         }
 
@@ -57,9 +60,42 @@ public class InventoryManager : Singleton<InventoryManager>
         {
             _slots[i].SetItem(remaining[i]);
             _slots[i].SetItemTransform(remaining[i]);
+            _slots[i].SetSlotColor(remaining[i]);
         }
 
 
         return removedItem;
+    }
+
+
+    public bool HasEmptySlot()
+    {
+        int cnt = 0;
+        for (int i = 0; i < _slots.Length; i++) 
+        {
+            if (_slots[i].IsEmpty)
+                cnt++;
+        }
+
+        if (cnt == 0)
+            StartCoroutine(FlashRedBorder());
+
+        return cnt != 0;
+    }
+
+    IEnumerator FlashRedBorder()
+    {
+        for (int i = 0; i < _slots.Length; i++)
+        {
+            _slots[i].BorderImage.color = Color.red;
+        }
+
+        yield return new WaitForSeconds(2f);
+
+        for (int i = 0; i < _slots.Length; i++)
+        {
+            BaseItem item = _slots[i].GetComponentInChildren<BaseItem>();
+            Slots[i].SetBorderColor(item);
+        }
     }
 }

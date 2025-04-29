@@ -20,37 +20,47 @@ public class InventorySlot : MonoBehaviour
     {
         Data = item.Data;
         item.gameObject.transform.SetParent(transform);
-        SetBorder(item);
+        SetBorderColor(item);
+        SetSlotColor(item);
     }
 
     /// <summary>
     /// 슬롯 배경색 지정해주는 함수
     /// </summary>
     /// <param name="item"></param>
-    public void SetBorder(BaseItem item)
+    public void SetBorderColor(BaseItem item)
     {
+        BorderImage.color = Color.black;
+        InventoryManager.Instance.Slots[InventoryManager.Instance.SelectedSlotIndex].BorderImage.color = Color.yellow;
+    }
+
+    public void SetSlotColor(BaseItem item)
+    {
+        Image slotImage = GetComponent<Image>();
         if (item is SpecialItem special)
         {
             switch (special.Type)
             {
                 case SpecialItemType.HealthRecovery:
-                    BorderImage.color = Color.red;
+                    slotImage.color = Color.red;
                     break;
                 case SpecialItemType.HungerRecovery:
-                    BorderImage.color = Color.yellow;
+                    slotImage.color = Color.yellow;
                     break;
                 case SpecialItemType.ThirstRecovery:
-                    BorderImage.color = Color.blue;
+                    slotImage.color = Color.blue;
                     break;
                 default:
-                    BorderImage.color = Color.green;
+                    slotImage.color = Color.green;
                     break;
             }
         }
         else
         {
-            BorderImage.color = Color.green;
+            slotImage.color = Color.green;
         }
+
+        InventoryManager.Instance.Slots[InventoryManager.Instance.SelectedSlotIndex].BorderImage.color = Color.yellow;
     }
 
     /// <summary>

@@ -17,6 +17,7 @@ public class TradeItemData
     public string SellerWalletAddress;
     [NonSerialized]
     public DateTime ListedTime;
+    public int LeftSeconds;
 }
 
 [Serializable]
@@ -71,61 +72,61 @@ public class TradeManager : Singleton<TradeManager>
         CategoryButtons[CategoryButtons.Length - 1].onClick.AddListener(() => { ShowAllItems(); });
         ShowAllItems();
         UpdateLatestValidPreviews();
-        StartCoroutine(UpdateTimeDisplay());
+        //StartCoroutine(UpdateTimeDisplay());
     }
 
     /// <summary>
     /// Coroutine that updates the remaining time display for each preview.
     /// </summary>
-    private IEnumerator UpdateTimeDisplay()
-    {
-        while (true)
-        {
-            DateTime now = DateTime.Now;
-            for (int i = 0; i < ItemPreviews.Length; i++)
-            {
-                if (!ItemPreviews[i].gameObject.activeSelf)
-                    continue;
-                TimeSpan remainingTime = ItemPreviews[i].Data.ListedTime.AddHours(24) - now;
-                if (remainingTime.TotalSeconds <= 0)
-                {
-                    ItemPreviews[i].SetExpired();
-                    ItemPreviews[i].TimeText.text = "00:00:00";
-                }
-                else
-                {
-                    ItemPreviews[i].TimeText.text = remainingTime.ToString(@"hh\:mm\:ss");
-                }
-            }
-            yield return new WaitForSeconds(1f);
-        }
-    }
+    //private IEnumerator UpdateTimeDisplay()
+    //{
+    //    while (true)
+    //    {
+    //        DateTime now = DateTime.Now;
+    //        for (int i = 0; i < ItemPreviews.Length; i++)
+    //        {
+    //            if (!ItemPreviews[i].gameObject.activeSelf)
+    //                continue;
+    //            TimeSpan remainingTime = ItemPreviews[i].Data.ListedTime.AddHours(24) - now;
+    //            if (remainingTime.TotalSeconds <= 0)
+    //            {
+    //                ItemPreviews[i].SetExpired();
+    //                ItemPreviews[i].TimeText.text = "00:00:00";
+    //            }
+    //            else
+    //            {
+    //                ItemPreviews[i].TimeText.text = remainingTime.ToString(@"hh\:mm\:ss");
+    //            }
+    //        }
+    //        yield return new WaitForSeconds(1f);
+    //    }
+    //}
 
     /// <summary>
     /// Updates the remaining time display for the current page.
     /// </summary>
-    private void UpdateTimeForCurrentPage()
-    {
-        DateTime now = DateTime.Now;
-        for (int i = 0; i < ItemPreviews.Length; i++)
-        {
-            if (!ItemPreviews[i].gameObject.activeSelf)
-                continue;
-            TimeSpan remainingTime = ItemPreviews[i].Data.ListedTime.AddHours(24) - now;
-            if (remainingTime.TotalSeconds <= 0)
-            {
-                if (!ItemPreviews[i].Data.IsExpired)
-                {
-                    ItemPreviews[i].SetExpired();
-                }
-                ItemPreviews[i].TimeText.text = "00:00:00";
-            }
-            else
-            {
-                ItemPreviews[i].TimeText.text = remainingTime.ToString(@"hh\:mm\:ss");
-            }
-        }
-    }
+    //private void UpdateTimeForCurrentPage()
+    //{
+    //    DateTime now = DateTime.Now;
+    //    for (int i = 0; i < ItemPreviews.Length; i++)
+    //    {
+    //        if (!ItemPreviews[i].gameObject.activeSelf)
+    //            continue;
+    //        TimeSpan remainingTime = ItemPreviews[i].Data.ListedTime.AddHours(24) - now;
+    //        if (remainingTime.TotalSeconds <= 0)
+    //        {
+    //            if (!ItemPreviews[i].Data.IsExpired)
+    //            {
+    //                ItemPreviews[i].SetExpired();
+    //            }
+    //            ItemPreviews[i].TimeText.text = "00:00:00";
+    //        }
+    //        else
+    //        {
+    //            ItemPreviews[i].TimeText.text = remainingTime.ToString(@"hh\:mm\:ss");
+    //        }
+    //    }
+    //}
 
     /// <summary>
     /// Sorts current display items in latest order and shows the first page.
@@ -205,7 +206,7 @@ public class TradeManager : Singleton<TradeManager>
         _pageComponent.TotalPageCount = totalPages;
         _pageComponent.UpdatePaginationButtons(pageIndex + 1);
         CurrentPage = pageIndex;
-        UpdateTimeForCurrentPage();
+        //UpdateTimeForCurrentPage();
     }
 
     /// <summary>

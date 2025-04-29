@@ -71,7 +71,7 @@ public class SelectBorder : MonoBehaviour
             BaseItem item = slot.GetComponentInChildren<BaseItem>();
             if (item != null)
             {
-                slot.SetBorder(item);        // 기존 SetBorder로 기본 색상 적용
+                slot.SetBorderColor(item);        // 기존 SetBorder로 기본 색상 적용
             }
             else
             {
