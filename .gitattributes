@@ -1,0 +1,4 @@
+TerrainDemoScene_URP/ filter=lfs diff=lfs merge=lfs -text
+TerrainDemoScene_URP filter=lfs diff=lfs merge=lfs -text
+TerrainDemoScene_URP/* filter=lfs diff=lfs merge=lfs -text
+TerrainDemoScene_URP/** filter=lfs diff=lfs merge=lfs -text
