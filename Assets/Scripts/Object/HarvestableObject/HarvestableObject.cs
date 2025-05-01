@@ -59,7 +59,8 @@ public class HarvestableObject : MonoBehaviour,IDamageable,ILootDrop
             item.gameObject.transform.position = transform.position;
             #if UNITY_EDITOR
             Debug.Log($"{gameObject.name} 채집 완료! {HarvestData.YieldAmount} x {HarvestData.MaterialData.ItemName} 지급");
-            #endif
+#endif
+            Destroy(gameObject.transform.parent.gameObject);
         }
         else
         {
@@ -75,4 +76,9 @@ public class HarvestableObject : MonoBehaviour,IDamageable,ILootDrop
         _randomAngle += Random.Range(10f, 30f) * Mathf.Deg2Rad;
         transform.position = new Vector3(Center.x + Radius * Mathf.Cos(_randomAngle), Center.y + Random.Range(-0.1f,0.1f), Center.z + Radius * Mathf.Sin(_randomAngle));
     }   
+
+    public bool IsMaterial()
+    {
+        return HarvestData.name.Contains("Wood") || HarvestData.name.Contains("Rock");
+    }
 }

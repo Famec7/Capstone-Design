@@ -303,6 +303,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Data: {fileID: 11400000, guid: 2be784246bd107f4da9eb4b4af1b7906, type: 2}
+  IsInInventory: 0
 --- !u!114 &2285349121916924204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -317,6 +318,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AngularSpeedThreshold: 500
   ChoppingAngleThreshold: 0.5
+  _ignoreObjectDatas:
+  - {fileID: 11400000, guid: 30dc771794b707a4991a0f65f3ea115e, type: 2}
+  - {fileID: 11400000, guid: 6cdac400e55af9e4db526d4cca9810df, type: 2}
 --- !u!1 &8643933058092486454
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,7 +331,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3285311111268480269}
   m_Layer: 0
-  m_Name: AttachPoint
+  m_Name: Attach Point
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0

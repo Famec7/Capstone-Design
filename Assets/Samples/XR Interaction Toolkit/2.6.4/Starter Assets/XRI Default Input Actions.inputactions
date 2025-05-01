@@ -349,7 +349,7 @@
                     "name": "Is Tracked",
                     "type": "Button",
                     "id": "82eb6741-beef-48d3-83ab-a957dc1caa1e",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -448,6 +448,24 @@
                     "name": "LeftGrip",
                     "type": "Value",
                     "id": "714e0d7f-428c-4378-8e58-f8673dfcf03e",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Left Primary Button(X)",
+                    "type": "Value",
+                    "id": "98c4dc13-63f2-4fa7-8cdc-8429ec38a1d0",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Left Second Button(Y)",
+                    "type": "Value",
+                    "id": "616d9b03-ce46-4786-96a7-15c18335092c",
                     "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
@@ -705,6 +723,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "LeftGrip",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "02402871-68e7-48e4-9e33-be1bad5a360a",
+                    "path": "<XRController>{LeftHand}/{PrimaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left Primary Button(X)",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9df21f3f-aae5-451a-9bb3-965020b702ec",
+                    "path": "<XRController>{LeftHand}/{SecondaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left Second Button(Y)",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -1279,6 +1319,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Right Primary Button(A)",
+                    "type": "Value",
+                    "id": "79c04481-20ae-4f40-81c6-2e51bcb641ed",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Right Second Button(B)",
+                    "type": "Value",
+                    "id": "39da2cf1-88b1-4e55-b3ed-5fc94d8101fe",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -1532,6 +1590,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Right Grip",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8b251018-b0b4-4ab7-a527-b8496c245fc1",
+                    "path": "<XRController>{RightHand}/{PrimaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right Primary Button(A)",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "85def894-685d-4001-abaf-7d753a40465a",
+                    "path": "<XRController>{RightHand}/{SecondaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right Second Button(B)",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -2790,6 +2870,65 @@
                     "action": "Touch Release",
                     "isComposite": false,
                     "isPartOfComposite": true
+                }
+            ]
+        },
+        {
+            "name": "New action map",
+            "id": "9ff5b27b-b0d6-4199-9168-cd6183dff1d2",
+            "actions": [
+                {
+                    "name": "LeftHand PrimaryButton",
+                    "type": "Button",
+                    "id": "8497d46e-eccb-48f2-ac15-76e8e848780c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RightHand PrimaryButton",
+                    "type": "Button",
+                    "id": "e9da8b80-720a-4bc1-b71c-93e2db257191",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "bf9fe78d-adac-4d29-8b99-662e12631c94",
+                    "path": "<XRController>{LeftHand}/{PrimaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LeftHand PrimaryButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "225157c8-fd6e-4e4a-8413-8d9272ef0743",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LeftHand PrimaryButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7f821f69-d170-4f27-b361-ee1548c53cf6",
+                    "path": "<XRController>{RightHand}/{PrimaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RightHand PrimaryButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

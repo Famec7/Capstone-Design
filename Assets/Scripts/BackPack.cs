@@ -45,6 +45,7 @@ public class BackPack : MonoBehaviour
                 item.IsInInventory = true;
                 grab.enabled = false;
 
+
                 InventoryInteractionLock.Trigger();
             }
         }

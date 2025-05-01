@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf4cad127a20cc84cacae7c364788cc2, type: 3}
-  m_Name: TreeData
+  m_Name: RockData
   m_EditorClassIdentifier: 
-  MaterialData: {fileID: 11400000, guid: f72079adc96b94f4fa147ee46f9708aa, type: 2}
+  MaterialData: {fileID: 11400000, guid: 6d95710c0c5c6d54bbf0053af88668a4, type: 2}
   YieldAmount: 1
   Durability: 5
