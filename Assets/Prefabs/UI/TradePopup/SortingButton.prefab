@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uCD5C\uC2E0\uC21C"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: cfc45dcba7f9c8f44801ce769a32f4d7, type: 2}
-  m_sharedMaterial: {fileID: 2508398004594941163, guid: cfc45dcba7f9c8f44801ce769a32f4d7, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: e90e1e1482807ee4bbe5e5b129711abd, type: 2}
+  m_sharedMaterial: {fileID: 3566820596761837429, guid: e90e1e1482807ee4bbe5e5b129711abd, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

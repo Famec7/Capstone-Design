@@ -9,12 +9,12 @@ public class ItemDataManager : Singleton<ItemDataManager>
 
    protected override void Init()
    {
-
+        LoadAllItemData();
    }
 
     private void LoadAllItemData()
     {
-        _itemDatas = Resources.LoadAll<ItemData>("ItemDatas");
+        _itemDatas = Resources.LoadAll<ItemData>("Items");
 #if UNITY_EDITOR
         Debug.Log("Loaded all item data: " + _itemDatas.Length);
 #endif

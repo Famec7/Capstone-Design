@@ -32,9 +32,13 @@ public class ItemPreview : MonoBehaviour, IPointerDownHandler
         NameText.text = Data.ItemName;
         PriceText.text = Data.ItemPrice.ToString();
 
-        TimeSpan timeDiff = DateTime.Now - Data.ListedTime;
-        TimeText.text = timeDiff.ToString(@"hh\:mm\:ss");
-      
+        TimeSpan time = TimeSpan.FromSeconds(data.LeftSeconds);
+        if (time.TotalSeconds <= 0)
+        {
+            return;
+        }
+        
+        TimeText.text = time.ToString(@"mm\:ss");
     }
 
 
