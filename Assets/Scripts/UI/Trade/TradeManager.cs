@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,19 +12,15 @@ public class TradeItemData
 {
     public string ItemName;
     public ItemType ItemType;
-    public int ItemPrice;
-    public string ListedAt;
-    public bool IsExpired { get { DateTime listedDate = DateTime.Parse(ListedAt); return DateTime.Now > listedDate.AddHours(24); } }
+    public float ItemPrice;
     public string SellerWalletAddress;
-    [NonSerialized]
-    public DateTime ListedTime;
     public int LeftSeconds;
 }
 
 [Serializable]
 public class TradeItemDataList
 {
-    public List<TradeItemData> items;
+    public List<TradeItemData> items = new List<TradeItemData>();
 }
 
 public class TradeManager : Singleton<TradeManager>
@@ -41,105 +38,47 @@ public class TradeManager : Singleton<TradeManager>
 
     private List<TradeItemData> _currentDisplayItems;
     private ItemType? _currentFilter = null; // null means ALL is selected
+    
+    [Header("JSON File Path")]
+    [SerializeField]
+    private string fileName;
 
     /// <summary>
     /// Initialize TradeManager data, assign button listeners, and display all items.
     /// </summary>
     protected override void Init()
     {
-        TextAsset jsonText = Resources.Load<TextAsset>("TradeTest");
-        if (jsonText == null)
-        {
-            Debug.LogError("Resources 폴더에서 TradeTest.json 파일을 찾을 수 없습니다!");
-            return;
-        }
-        TradeItemDataList tradeItems = JsonUtility.FromJson<TradeItemDataList>(jsonText.text);
-        Datas = tradeItems.items;
-        foreach (var data in Datas)
-        {
-            if (DateTime.TryParse(data.ListedAt, out DateTime parsedTime))
-            {
-                data.ListedTime = parsedTime;
-                Debug.Log($"{data.ItemName} - {data.ItemType}");
-            }
-        }
-        _currentDisplayItems = new List<TradeItemData>(Datas);
         for (int i = 0; i < CategoryButtons.Length - 1; i++)
         {
             int index = i;
             CategoryButtons[i].onClick.AddListener(() => { FilterByItemType((ItemType)index); });
         }
         CategoryButtons[CategoryButtons.Length - 1].onClick.AddListener(() => { ShowAllItems(); });
-        ShowAllItems();
-        UpdateLatestValidPreviews();
-        //StartCoroutine(UpdateTimeDisplay());
     }
 
-    /// <summary>
-    /// Coroutine that updates the remaining time display for each preview.
-    /// </summary>
-    //private IEnumerator UpdateTimeDisplay()
-    //{
-    //    while (true)
-    //    {
-    //        DateTime now = DateTime.Now;
-    //        for (int i = 0; i < ItemPreviews.Length; i++)
-    //        {
-    //            if (!ItemPreviews[i].gameObject.activeSelf)
-    //                continue;
-    //            TimeSpan remainingTime = ItemPreviews[i].Data.ListedTime.AddHours(24) - now;
-    //            if (remainingTime.TotalSeconds <= 0)
-    //            {
-    //                ItemPreviews[i].SetExpired();
-    //                ItemPreviews[i].TimeText.text = "00:00:00";
-    //            }
-    //            else
-    //            {
-    //                ItemPreviews[i].TimeText.text = remainingTime.ToString(@"hh\:mm\:ss");
-    //            }
-    //        }
-    //        yield return new WaitForSeconds(1f);
-    //    }
-    //}
+    public void UpdateUI()
+    {
+        string path = Path.Combine(Application.dataPath, fileName);
 
-    /// <summary>
-    /// Updates the remaining time display for the current page.
-    /// </summary>
-    //private void UpdateTimeForCurrentPage()
-    //{
-    //    DateTime now = DateTime.Now;
-    //    for (int i = 0; i < ItemPreviews.Length; i++)
-    //    {
-    //        if (!ItemPreviews[i].gameObject.activeSelf)
-    //            continue;
-    //        TimeSpan remainingTime = ItemPreviews[i].Data.ListedTime.AddHours(24) - now;
-    //        if (remainingTime.TotalSeconds <= 0)
-    //        {
-    //            if (!ItemPreviews[i].Data.IsExpired)
-    //            {
-    //                ItemPreviews[i].SetExpired();
-    //            }
-    //            ItemPreviews[i].TimeText.text = "00:00:00";
-    //        }
-    //        else
-    //        {
-    //            ItemPreviews[i].TimeText.text = remainingTime.ToString(@"hh\:mm\:ss");
-    //        }
-    //    }
-    //}
+        if (!File.Exists(path))
+        {
+            Debug.LogError("JSON 파일을 찾을 수 없습니다: " + path);
+            return;
+        }
+        
+        string jsonText = File.ReadAllText(path);
+        TradeItemDataList tradeItems = JsonUtility.FromJson<TradeItemDataList>(jsonText);
+        
+        Datas = tradeItems.items;
+        ShowAllItems();
+        UpdateLatestValidPreviews();
+    }
 
     /// <summary>
     /// Sorts current display items in latest order and shows the first page.
     /// </summary>
     public void UpdateLatestValidPreviews()
     {
-        RemoveExpiredData();
-        _currentDisplayItems.Sort((a, b) =>
-        {
-            TimeSpan remainingA = a.ListedTime.AddHours(24) - DateTime.Now;
-            TimeSpan remainingB = b.ListedTime.AddHours(24) - DateTime.Now;
-            return remainingA.CompareTo(remainingB);
-        });
         int totalPages = _currentDisplayItems.Count / PreviewCounts + (_currentDisplayItems.Count % PreviewCounts != 0 ? 1 : 0);
         _pageComponent.TotalPageCount = totalPages;
         UpdatePage(0);
@@ -150,7 +89,6 @@ public class TradeManager : Singleton<TradeManager>
     /// </summary>
     public void UpdateAscendingPreviews()
     {
-        RemoveExpiredData();
         _currentDisplayItems.Sort((a, b) => a.ItemPrice.CompareTo(b.ItemPrice));
         int totalPages = _currentDisplayItems.Count / PreviewCounts + (_currentDisplayItems.Count % PreviewCounts != 0 ? 1 : 0);
         _pageComponent.TotalPageCount = totalPages;
@@ -162,20 +100,10 @@ public class TradeManager : Singleton<TradeManager>
     /// </summary>
     public void UpdateDescendingPreviews()
     {
-        RemoveExpiredData();
         _currentDisplayItems.Sort((a, b) => b.ItemPrice.CompareTo(a.ItemPrice));
         int totalPages = _currentDisplayItems.Count / PreviewCounts + (_currentDisplayItems.Count % PreviewCounts != 0 ? 1 : 0);
         _pageComponent.TotalPageCount = totalPages;
         UpdatePage(0);
-    }
-
-    /// <summary>
-    /// Removes expired data from Datas.
-    /// </summary>
-    public void RemoveExpiredData()
-    {
-        DateTime now = DateTime.Now;
-        Datas.RemoveAll(data => (now - data.ListedTime).TotalHours >= 24);
     }
 
     /// <summary>
@@ -271,7 +199,6 @@ public class TradeManager : Singleton<TradeManager>
     /// </summary>
     public void FilterByItemType(ItemType filterType)
     {
-        RemoveExpiredData();
         List<TradeItemData> filteredItems = Datas.Where(item => item.ItemType == filterType).ToList();
         _currentDisplayItems = filteredItems;
         _currentFilter = filterType;
@@ -293,7 +220,6 @@ public class TradeManager : Singleton<TradeManager>
     /// </summary>
     public void ShowAllItems()
     {
-        RemoveExpiredData();
         _currentDisplayItems = new List<TradeItemData>(Datas);
         _currentFilter = null;
         int totalPages = Datas.Count / PreviewCounts + (Datas.Count % PreviewCounts != 0 ? 1 : 0);

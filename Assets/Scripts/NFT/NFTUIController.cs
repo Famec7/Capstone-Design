@@ -39,7 +39,7 @@ public class NFTUIController : MonoBehaviour
         buyNFTButton.onClick.AddListener(() => StartCoroutine(IE_RequestBuyNFT(0)));
     }
 
-    /************ UI 버튼 기능 ***********/
+    /************ NFT 마켓 등록 ***********/
     private IEnumerator IE_ListNFT(int tokenID, int price, int duration)
     {
         const string url = "http://13.125.167.56:8000/api/nft/listNFT/";
@@ -63,6 +63,7 @@ public class NFTUIController : MonoBehaviour
         }
     }
 
+	/************ NFT 구매 요청 ***********/
     private IEnumerator IE_RequestBuyNFT(int tokenID)
     {
         const string url = "http://13.125.167.56:8000/api/nft/buyNFT/";
@@ -94,6 +95,7 @@ public class NFTUIController : MonoBehaviour
         }
     }
 
+	/************ NFT 구매 확정 ***********/
     private IEnumerator IE_ConfirmBuyNFT(string requestKey, int tokenID)
     {
         const string url = "http://13.125.167.56:8000/api/nft/confirmBuyNFT/";

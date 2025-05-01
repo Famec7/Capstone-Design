@@ -64,26 +64,28 @@ public class FetchNFTData : MonoBehaviour
             yield break;
         }
         
-        List<TradeItemData> trades = new List<TradeItemData>();
+        TradeItemDataList trades = new TradeItemDataList();
         foreach (var nft in nftItemList.items)
         {
-            ItemData itemData = ItemDataManager.Instance.GetItemDataById(nft.itemId);
+            ItemData itemData = ItemDataManager.Instance.GetItemDataById(nft.item_id);
             
             TradeItemData tradeItemData = new TradeItemData
             {
                 ItemName = itemData.ItemName,
                 ItemType = itemData.ItemType,
-                ItemPrice = int.Parse(nft.price_klay),
+                ItemPrice = float.Parse(nft.price_klay),
                 SellerWalletAddress = nft.seller,
-                ListedAt = nft.seller,
+                LeftSeconds = nft.remaining_time,
             };
             
-            trades.Add(tradeItemData);
+            trades.items.Add(tradeItemData);
         }
         
-        string path = System.IO.Path.Combine(Application.persistentDataPath, fileName);
-        string tradeJson = JsonUtility.ToJson(trades, true);
+        string path = System.IO.Path.Combine(Application.dataPath, fileName);
+        string tradeJson = JsonUtility.ToJson(trades);
         System.IO.File.WriteAllText(path, tradeJson);
+        
+        TradeManager.Instance.UpdateUI();
         
         _refreshCoroutine = null;
     }
@@ -109,10 +111,10 @@ public class NFTItemList
 [Serializable]
 public class NFTItem
 {
-    public int tokenId;
-    public int itemId;
+    public int token_id;
+    public int item_id;
     public string seller;
     public string price_klay;
     public string metadata_uri;
-    public float remaining_time;
+    public int remaining_time;
 }
