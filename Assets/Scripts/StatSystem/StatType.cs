@@ -4,5 +4,9 @@ public enum StatType
     Health,
     Hunger,
     Thirst,
-    Stamina
+    Stamina,
+    AttackPower,
+    MovementSpeed,
+    AttackSpeed,
+    AttackRange
 }

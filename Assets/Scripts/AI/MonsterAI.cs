@@ -8,12 +8,10 @@ public class MonsterAI : MonoBehaviour
     [SerializeField] private bool isAggressive = true;
     [SerializeField] private float sightAngle = 90f;
     [SerializeField] private float sightDistance = 10f;
-    [SerializeField] private float attackRange = 2f;
-    [SerializeField] private float attackCooldown = 1.5f;
 
     [Header("순찰 설정")]
-    [SerializeField] private float patrolRadius = 5f;         
-    [SerializeField] private float waitTimeAtPatrolPoint = 3f; 
+    [SerializeField] private float patrolRadius = 5f;
+    [SerializeField] private float waitTimeAtPatrolPoint = 3f;
 
     private enum State { Patrol, Wait, Return, Chase, Attack }
     private State currentState = State.Patrol;
@@ -28,33 +26,39 @@ public class MonsterAI : MonoBehaviour
     private bool isProvoked = false;
     private bool isAttacking = false;
 
+    private MonsterStatus monsterStatus;
+
     void Start()
     {
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         homePosition = transform.position;
+        monsterStatus = GetComponent<MonsterStatus>();
+
+        var moveStat = monsterStatus.GetStat(StatType.MovementSpeed);
+        if (moveStat != null)
+            agent.speed = moveStat.currentValue;
+
         GoToRandomPatrolPoint();
     }
 
     void Update()
     {
-        float moveSpeed = agent.velocity.magnitude;
-        animator.SetFloat("Speed", moveSpeed);
+        TryDetectPlayer();
+
+        animator.SetFloat("Speed", agent.velocity.magnitude);
 
         switch (currentState)
         {
             case State.Patrol:
                 Patrol();
-                TryDetectPlayer();
                 break;
             case State.Wait:
                 WaitAtPatrolPoint();
-                TryDetectPlayer();
                 break;
             case State.Return:
                 ReturnToHome();
-                TryDetectPlayer();
                 break;
             case State.Chase:
                 Chase();
@@ -95,10 +99,10 @@ public class MonsterAI : MonoBehaviour
 
     private void GoToRandomPatrolPoint()
     {
-        Vector2 randomCircle = Random.insideUnitCircle * patrolRadius;
-        Vector3 randomPoint = homePosition + new Vector3(randomCircle.x, 0, randomCircle.y);
+        Vector2 randCircle = Random.insideUnitCircle * patrolRadius;
+        Vector3 randPoint = homePosition + new Vector3(randCircle.x, 0, randCircle.y);
 
-        if (NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, 1.0f, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(randPoint, out NavMeshHit hit, 1f, NavMesh.AllAreas))
         {
             patrolTarget = hit.position;
             agent.SetDestination(patrolTarget);
@@ -110,51 +114,10 @@ public class MonsterAI : MonoBehaviour
         }
     }
 
-    private void Attack()
-    {
-        if (isAttacking) return;
-
-        if (attackTimer < attackCooldown)
-        {
-            attackTimer += Time.deltaTime;
-            return;
-        }
-
-        if (Vector3.Distance(transform.position, player.position) <= attackRange)
-        {
-            isAttacking = true;
-            attackTimer = 0f;
-
-            transform.LookAt(player);
-            agent.SetDestination(transform.position);
-            animator.SetTrigger("Attack");
-
-            Debug.Log($"{name} attacks the player!");
-        }
-        else
-        {
-            currentState = State.Chase;
-        }
-    }
-
-    public void EndAttack()
-    {
-        Debug.Log("EndAttack called");
-        isAttacking = false;
-    }
-
-    private void TryDetectPlayer()
-    {
-        if (!CanSeePlayer()) return;
-
-        if (isAggressive || isProvoked)
-        {
-            currentState = State.Chase;
-        }
-    }
-
     private void Chase()
     {
+        float range = monsterStatus.GetStat(StatType.AttackRange)?.currentValue ?? 0f;
+
         if (!CanSeePlayer() && !isAggressive && !isProvoked)
         {
             GoToRandomPatrolPoint();
@@ -164,31 +127,91 @@ public class MonsterAI : MonoBehaviour
 
         agent.SetDestination(player.position);
 
-        if (Vector3.Distance(transform.position, player.position) <= attackRange)
-        {
+        if (Vector3.Distance(transform.position, player.position) <= range)
             currentState = State.Attack;
+    }
+
+    private void Attack()
+    {
+        if (isAttacking) return;
+
+        float atkSpeed = monsterStatus.GetStat(StatType.AttackSpeed)?.currentValue ?? 1f;
+        float cooldown = 1f / atkSpeed;
+
+        if (attackTimer < cooldown)
+        {
+            attackTimer += Time.deltaTime;
+            return;
+        }
+
+        float range = monsterStatus.GetStat(StatType.AttackRange)?.currentValue ?? 0f;
+
+        if (Vector3.Distance(transform.position, player.position) <= range)
+        {
+            isAttacking = true;
+            attackTimer = 0f;
+
+            transform.LookAt(player);
+            agent.SetDestination(transform.position);
+            animator.SetTrigger("Attack");
+            Debug.Log($"{name} 공격 애니메이션 시작");
+        }
+        else
+        {
+            currentState = State.Chase;
+        }
+    }
+
+    public void OnAttackHit()
+    {
+        float range = monsterStatus.GetStat(StatType.AttackRange)?.currentValue ?? 0f;
+        if (Vector3.Distance(transform.position, player.position) <= range)
+        {
+            var ps = player.GetComponent<PlayerStatus>();
+            if (ps != null)
+            {
+                float dmg = monsterStatus.GetStat(StatType.AttackPower)?.currentValue ?? 0f;
+                ps.ModifyStat(StatType.Health, -dmg);
+                Debug.Log($"{name} dealt {dmg} damage to player");
+            }
+        }
+    }
+
+    public void EndAttack()
+    {
+        isAttacking = false;
+        Debug.Log("EndAttack called");
+    }
+
+    private void TryDetectPlayer()
+    {
+        if (CanSeePlayer() && (isAggressive || isProvoked))
+        {
+            currentState = State.Chase;
         }
     }
 
     private bool CanSeePlayer()
     {
-        Vector3 flatDirectionToPlayer = new Vector3(player.position.x, transform.position.y, player.position.z) - transform.position;
-        float distance = flatDirectionToPlayer.magnitude;
-        float angle = Vector3.Angle(transform.forward, flatDirectionToPlayer.normalized);
-
+        Vector3 flatDir = new Vector3(player.position.x, transform.position.y, player.position.z) - transform.position;
+        float distance = flatDir.magnitude;
+        float angle = Vector3.Angle(transform.forward, flatDir.normalized);
         Vector3 origin = transform.position + Vector3.up * 0.5f;
 
         DrawSightDebug(origin);
 
         if (angle <= sightAngle * 0.5f && distance <= sightDistance)
         {
-            if (Physics.Raycast(origin, flatDirectionToPlayer.normalized, out RaycastHit hit, sightDistance))
+            if (Physics.Raycast(origin, flatDir.normalized, out RaycastHit hit, sightDistance))
             {
-                Debug.DrawRay(origin, flatDirectionToPlayer.normalized * sightDistance, Color.red, 0.1f);
-                if (hit.collider.CompareTag("Player"))
-                {
+                bool isPlayer = hit.collider.CompareTag("Player");
+                Color rayColor = isPlayer ? Color.green : Color.red;
+
+                Debug.DrawRay(origin, flatDir.normalized * sightDistance, rayColor, 0.1f);
+                Debug.Log($"{name} Raycast hit: {hit.collider.name} (Tag: {hit.collider.tag})");
+
+                if (isPlayer)
                     return true;
-                }
             }
         }
 
@@ -197,16 +220,15 @@ public class MonsterAI : MonoBehaviour
 
     private void DrawSightDebug(Vector3 origin)
     {
-        int segmentCount = 10; 
+        int segments = 10;
         float halfFOV = sightAngle * 0.5f;
 
-        for (int i = 0; i <= segmentCount; i++)
+        for (int i = 0; i <= segments; i++)
         {
-            float angle = -halfFOV + (sightAngle / segmentCount) * i;
-            Quaternion rotation = Quaternion.Euler(0, angle, 0);
-            Vector3 direction = rotation * transform.forward;
-
-            Debug.DrawRay(origin, direction.normalized * sightDistance, Color.yellow, 0.1f);
+            float ang = -halfFOV + (sightAngle / segments) * i;
+            Quaternion rot = Quaternion.Euler(0, ang, 0);
+            Vector3 dir = rot * transform.forward;
+            Debug.DrawRay(origin, dir.normalized * sightDistance, Color.yellow, 0.1f);
         }
     }
 
