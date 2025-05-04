@@ -465,7 +465,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.0010223389, y: -0.007904053}
+  m_AnchoredPosition: {x: -0.0010223389, y: -0.0027770996}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6922775085266230614
@@ -1981,6 +1981,7 @@ MonoBehaviour:
   NameText: {fileID: 6408813140197143363}
   DescriptionText: {fileID: 9216797753082322955}
   CategoryText: {fileID: 4524452699708057685}
+  BuyButton: {fileID: 225011101887806555}
 --- !u!1 &5153093758618570353
 GameObject:
   m_ObjectHideFlags: 0
@@ -2938,6 +2939,7 @@ MonoBehaviour:
   - {fileID: 5373831287588893261}
   - {fileID: 3644370089476640545}
   _pageComponent: {fileID: 7798675695029464125}
+  fileName: 
 --- !u!1 &7485658014500518937
 GameObject:
   m_ObjectHideFlags: 0
@@ -3102,7 +3104,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &6407345666012723133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3135,7 +3137,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listNFTButton: {fileID: 0}
-  buyNFTButton: {fileID: 0}
+  buyNFTButton: {fileID: 225011101887806555}
   klipRequest: {fileID: 1908616452585839525}
   walletAddress: {fileID: 11400000, guid: 0ed30885b5f804848844376b8b7cdec0, type: 2}
 --- !u!1 &7629645559134376328
@@ -3606,7 +3608,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4170023547601233524}
   m_HandleRect: {fileID: 3771883124952916679}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 0.99998486
   m_NumberOfSteps: 0
   m_OnValueChanged:

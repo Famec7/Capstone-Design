@@ -57,10 +57,11 @@ public class KlipRequest : MonoBehaviour
 
                 KlipResultResponse response = JsonUtility.FromJson<KlipResultResponse>(request.downloadHandler.text);
 
-                if (response.status.CompareTo("completed") == 0)
+                if (String.Compare(response.status, "completed", StringComparison.Ordinal) == 0)
                 {
                     qrCodeImage.ClearQRCode();
                     OnRequestCompleted?.Invoke();
+                    yield break;
                 }
             }
         }
