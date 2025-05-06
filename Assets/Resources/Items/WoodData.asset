@@ -19,3 +19,4 @@ MonoBehaviour:
   ItemIcon: {fileID: 0}
   ItemModel: {fileID: 0}
   AttackPower: 1
+  IsNFT: 1

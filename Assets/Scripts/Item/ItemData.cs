@@ -7,7 +7,8 @@ public enum ItemType
     General,    
     Special,    
     Collection,
-    Material
+    Material,
+    None
 }
 
 
@@ -16,9 +17,11 @@ public class ItemData : ScriptableObject
 {
     public int ItemId;
     public string ItemName;
+    public string ItemDescription;
     public ItemType ItemType;
     public int ItemValue;
     public Sprite ItemIcon;
     public GameObject ItemModel;
     public int AttackPower;
+    public bool IsNFT = false;
 }
