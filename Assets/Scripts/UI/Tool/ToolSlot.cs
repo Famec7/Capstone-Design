@@ -15,14 +15,16 @@ public class ToolSlot : MonoBehaviour,IPointerEnterHandler, IPointerExitHandler
     [SerializeField]
     private ItemData _data;
 
-    private ToolUI _toolUI;
+    public ToolUI ToolUI;
     private bool _isHovered = false;
 
     public bool IsSelect;
 
+    public GameObject Tool;
+
     private void Awake()
     {
-        _toolUI= transform.parent.parent.GetComponent<ToolUI>();
+        ToolUI = transform.parent.parent.GetComponent<ToolUI>();
     }
 
     private void OnEnable()
@@ -42,12 +44,12 @@ public class ToolSlot : MonoBehaviour,IPointerEnterHandler, IPointerExitHandler
 
     private void OnGripPerformed(InputAction.CallbackContext ctx)
     {
-        if (_isHovered)
+        if (_isHovered && !IsSelect)
         {
-            BaseItem item = ItemFactory.Instance.CreateItem(_data.ItemName);
-            item.gameObject.transform.position = transform.position;
+            Tool.SetActive(true);
+            Tool.transform.position = transform.position;
             IsSelect = true;
-            _toolUI.DisableSlot(this);
+            ToolUI.DisableSlot(this);
         }
     }
 
