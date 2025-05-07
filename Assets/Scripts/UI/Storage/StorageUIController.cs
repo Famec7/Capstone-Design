@@ -1,6 +1,7 @@
 ﻿using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public enum SortType
@@ -33,7 +34,7 @@ public class StorageUIController : MonoBehaviour
     private Button sortOrderButton;
     
     [SerializeField]
-    private Button deleteToggleButton;
+    private Toggle deleteToggle;
     
     [SerializeField]
     private Button addButton;
@@ -89,9 +90,11 @@ public class StorageUIController : MonoBehaviour
             Refresh();
         });
         
-        deleteToggleButton.onClick.AddListener(() =>
+        deleteToggle.onValueChanged.AddListener(isOn =>
         {
-            _isDeleteMode = !_isDeleteMode;
+            _isDeleteMode = isOn;
+            deleteToggle.image.color = _isDeleteMode ? Color.red : Color.white;
+            
             Refresh();
         });
         
