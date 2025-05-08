@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemId: 0
   ItemName: 
+  ItemDescription: 
   ItemType: 0
   ItemValue: 0
   ItemIcon: {fileID: 0}
   ItemModel: {fileID: 0}
   AttackPower: 1
+  IsNFT: 0

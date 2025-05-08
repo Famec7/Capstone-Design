@@ -12,6 +12,7 @@ public class DetailedDescriptionSection : MonoBehaviour
     public TextMeshProUGUI NameText;
     public TextMeshProUGUI DescriptionText;
     public TextMeshProUGUI CategoryText;
+    public Button BuyButton;
     #endregion
 
     public void SetDetailedDescriptionSection(TradeItemData Data)
@@ -20,6 +21,7 @@ public class DetailedDescriptionSection : MonoBehaviour
         NameText.gameObject.SetActive(true);
         DescriptionText.gameObject.SetActive(true);
         CategoryText.gameObject.SetActive(true);
+        BuyButton.gameObject.SetActive(true);
 
         NameText.text = Data.ItemName;
         // 임시

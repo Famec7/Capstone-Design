@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -15,6 +16,41 @@ public class NFTUIController : MonoBehaviour
     
     #endregion
     
+    /************ API JSON ***********/
+    #region API JSON
+
+    [System.Serializable]
+    public class BuyNFTRequest
+    {
+        public int tokenID;
+        public string buyerAddress;
+    }
+    
+    [System.Serializable]
+    public class ConfirmBuyNFTRequest
+    {
+        public string requestKey;
+        public ConfirmBuyNFTResult result;
+    }
+
+    [System.Serializable]
+    public class ConfirmBuyNFTResult
+    {
+        public string buyer_address;
+        public int token_id;
+    }
+    
+    [System.Serializable]
+    public class ListNFTRequest
+    {
+        public int tokenID;
+        public int price;
+        public string sellerAddress;
+        public int listingDuration;
+    }
+
+    #endregion
+    
     [Header("Klip 요청 API")] [SerializeField]
     private KlipRequest klipRequest;
     [Header("유저 지갑 주소")][SerializeField]
@@ -22,6 +58,14 @@ public class NFTUIController : MonoBehaviour
 
     private void Start()
     {
+        if (buyNFTButton == null)
+        {
+            Debug.LogError("buyNFTButton이 inspector에서 할당되지 않았습니다.");
+            return;
+        }
+        
+        buyNFTButton.onClick.AddListener(() => StartCoroutine(IE_RequestBuyNFT(7)));
+        
         if (listNFTButton == null)
         {
             Debug.LogError("listNFTButton이 inspector에서 할당되지 않았습니다.");
@@ -29,14 +73,17 @@ public class NFTUIController : MonoBehaviour
         }
         
         listNFTButton.onClick.AddListener(() => StartCoroutine(IE_ListNFT(0, 0, 0)));
-        
-        if (buyNFTButton == null)
-        {
-            Debug.LogError("buyNFTButton이 inspector에서 할당되지 않았습니다.");
-            return;
-        }
-        
-        buyNFTButton.onClick.AddListener(() => StartCoroutine(IE_RequestBuyNFT(0)));
+    }
+    
+    private UnityWebRequest Post(string url, string jsonData)
+    {
+        var request = new UnityWebRequest(url, "POST");
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
+        request.uploadHandler = (UploadHandler) new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler) new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        return request;
     }
 
     /************ NFT 마켓 등록 ***********/
@@ -44,13 +91,17 @@ public class NFTUIController : MonoBehaviour
     {
         const string url = "http://13.125.167.56:8000/api/nft/listNFT/";
         
-        WWWForm form = new WWWForm();
-        form.AddField("tokenID", tokenID);
-        form.AddField("price", price);
-        form.AddField("sellerAddress", walletAddress.Address);
-        form.AddField("listingDuration", duration);
+        ListNFTRequest listRequest = new ListNFTRequest
+        {
+            tokenID = tokenID,
+            price = price,
+            sellerAddress = walletAddress.Address,
+            listingDuration = duration
+        };
         
-        UnityWebRequest request = UnityWebRequest.Post(url, form);
+        string jsonData = JsonUtility.ToJson(listRequest);
+        var request = Post(url, jsonData);
+        
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.Success)
@@ -68,11 +119,15 @@ public class NFTUIController : MonoBehaviour
     {
         const string url = "http://13.125.167.56:8000/api/nft/buyNFT/";
         
-        WWWForm form = new WWWForm();
-        form.AddField("tokenID", tokenID);
-        form.AddField("buyerAddress", walletAddress.Address);
+        BuyNFTRequest buyRequest = new BuyNFTRequest
+        {
+            tokenID = tokenID,
+            buyerAddress = walletAddress.Address
+        };
         
-        UnityWebRequest request = UnityWebRequest.Post(url, form);
+        string jsonData = JsonUtility.ToJson(buyRequest);
+        var request = Post(url, jsonData);
+        
         yield return request.SendWebRequest();
         
         if (request.result == UnityWebRequest.Result.Success)
@@ -100,12 +155,19 @@ public class NFTUIController : MonoBehaviour
     {
         const string url = "http://13.125.167.56:8000/api/nft/confirmBuyNFT/";
         
-        WWWForm form = new WWWForm();
-        form.AddField("requestKey", requestKey);
-        form.AddField("result.token_id", tokenID);
-        form.AddField("result.buyer_address", walletAddress.Address);
+        ConfirmBuyNFTRequest confirmRequest = new ConfirmBuyNFTRequest
+        {
+            requestKey = requestKey,
+            result = new ConfirmBuyNFTResult
+            {
+                buyer_address = walletAddress.Address,
+                token_id = tokenID
+            }
+        };
         
-        UnityWebRequest request = UnityWebRequest.Post(url, form);
+        string jsonData = JsonUtility.ToJson(confirmRequest);
+        UnityWebRequest request = Post(url, jsonData);
+        
         yield return request.SendWebRequest();
         
         if (request.result == UnityWebRequest.Result.Success)
