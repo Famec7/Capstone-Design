@@ -65,15 +65,23 @@ public class StorageUIController : MonoBehaviour
     {
         if (_service == null)
         {
-            _service = new InventoryService();
-            _service.Load(capacity: 5);
+            _service = new InventoryService(pageSize, 5);
         }
+    }
 
+    private void Start()
+    {
+        Bind();
+        Refresh();
+    }
+
+    private void Bind()
+    {
         foreach (var tab in categoryTabs)
         {
-            tab.Bind(currentItemType =>
+            tab.Bind(itemType =>
             {
-                _currentItemType = currentItemType;
+                _currentItemType = itemType;
                 Refresh();
             });
         }
@@ -120,11 +128,6 @@ public class StorageUIController : MonoBehaviour
         });
     }
 
-    private void Start()
-    {
-        Refresh();
-    }
-
     private void Refresh()
     {
         ClearSlots();
@@ -137,8 +140,8 @@ public class StorageUIController : MonoBehaviour
         }
         
         pageText.text = $"{_service.CurrentPage} / {_service.TotalPages}";
-        prevButton.interactable = _service.HasPreviousPage();
-        nextButton.interactable = _service.HasNextPage(_currentItemType, _currentSortType, _isSortAscending);
+        prevButton.gameObject.SetActive(_service.HasPreviousPage());
+        nextButton.gameObject.SetActive(_service.HasNextPage(_currentItemType, _currentSortType, _isSortAscending));
         
         detailView.Hide();
     }
