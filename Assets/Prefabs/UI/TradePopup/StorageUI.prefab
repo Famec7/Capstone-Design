@@ -2510,6 +2510,7 @@ MonoBehaviour:
   nextButton: {fileID: 6913593848592682190}
   pageText: {fileID: 5385436497101419174}
   slotParent: {fileID: 374176493785462644}
+  backpackSlotParent: {fileID: 4787497874356770870}
   pageSize: 20
 --- !u!1 &4380102512775433692
 GameObject:
@@ -2716,7 +2717,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 670, y: 331.9981}
-  m_SizeDelta: {x: 352.5, y: 551}
+  m_SizeDelta: {x: 400.8, y: 551}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &5834658245916261152
 CanvasRenderer:
@@ -2791,8 +2792,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 543.75, y: -294.16}
-  m_SizeDelta: {x: 252.5, y: 81.653}
+  m_AnchoredPosition: {x: 519.6, y: -294.16}
+  m_SizeDelta: {x: 300.8, y: 81.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7695477863069959439
 MonoBehaviour:
@@ -2839,13 +2840,13 @@ MonoBehaviour:
   m_Padding:
     m_Left: 10
     m_Right: 0
-    m_Top: 10
+    m_Top: 50
     m_Bottom: 0
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 60, y: 60}
-  m_Spacing: {x: 20, y: 20}
+  m_CellSize: {x: 70, y: 70}
+  m_Spacing: {x: 10, y: 10}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!222 &4394824823918573001
@@ -2941,7 +2942,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &2571629700840948495
 MonoBehaviour:
   m_ObjectHideFlags: 0

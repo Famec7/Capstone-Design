@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
+[Serializable]
 public class InventoryService
 {
     /**********아이템 데이터***********/
@@ -27,7 +28,13 @@ public class InventoryService
 
     public void Save()
     {
-        var json = JsonUtility.ToJson(Storage.Items, true);
+        var itemSaveList = new List<int>();
+        foreach (var item in Storage.Items)
+        {
+            itemSaveList.Add(item.ItemId);
+        }
+        
+        var json = JsonUtility.ToJson(itemSaveList, true);
         File.WriteAllText(_filePath, json);
 
         foreach (var item in Backpack.Items)
@@ -42,17 +49,20 @@ public class InventoryService
 
         if (File.Exists(_filePath))
         {
+            var itemSaveList = new List<int>();
+            
             var json = File.ReadAllText(_filePath);
-            var items = JsonUtility.FromJson<ItemData[]>(json);
+            var items = JsonUtility.FromJson<List<int>>(json);
 
             foreach (var item in items)
             {
-                Storage.Add(item);
+                var itemData = ItemDataManager.Instance.GetItemDataById(item);
+                Storage.Add(itemData);
             }
         }
 
         Backpack = new Backpack(capacity);
-        _backpackDatabase = Resources.Load<InventoryDatabase>("Items");
+        _backpackDatabase = Resources.Load<InventoryDatabase>("Items/UserBackPack");
 
         if (_backpackDatabase == null)
         {
@@ -117,7 +127,7 @@ public class InventoryService
     public IEnumerable<ItemData> GetCurrentPageItems(ItemType filter, SortType sortType, bool ascending)
     {
         return GetFilteredSorted(filter, sortType, ascending)
-            .Skip(CurrentPage * PageSize)
+            .Skip((CurrentPage - 1) * PageSize)
             .Take(PageSize);
     }
 

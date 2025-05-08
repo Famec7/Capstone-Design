@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -52,6 +53,9 @@ public class StorageUIController : MonoBehaviour
     [SerializeField]
     private Transform slotParent;
     
+    [SerializeField]
+    private Transform backpackSlotParent;
+    
     [Header("Page 하나 당 아이템 수")]
     [SerializeField]
     private int pageSize = 20;
@@ -101,9 +105,7 @@ public class StorageUIController : MonoBehaviour
         deleteToggle.onValueChanged.AddListener(isOn =>
         {
             _isDeleteMode = isOn;
-            deleteToggle.image.color = _isDeleteMode ? Color.red : Color.white;
-            
-            Refresh();
+            deleteToggle.image.color = _isDeleteMode ? Color.red : Color.white; 
         });
         
         addButton.onClick.AddListener(() =>
@@ -111,6 +113,13 @@ public class StorageUIController : MonoBehaviour
             if (detailView.gameObject.activeSelf)
             {
                 _service.MoveToBackPack(detailView.CurrentItemData);
+                
+                var slot = Instantiate(slotPrefab, backpackSlotParent);
+                slot.Bind(detailView.CurrentItemData, itemData =>
+                {
+                    OnBackpackSlotClicked(itemData);
+                    Destroy(slot.gameObject);
+                });
             }
             Refresh();
         });
@@ -131,7 +140,7 @@ public class StorageUIController : MonoBehaviour
     private void Refresh()
     {
         ClearSlots();
-        
+
         var items = _service.GetCurrentPageItems(_currentItemType, _currentSortType, _isSortAscending);
         
         foreach (var item in items)
@@ -166,11 +175,18 @@ public class StorageUIController : MonoBehaviour
     {
         if (_isDeleteMode)
         {
+            _service.DeleteItem(itemData);
             Refresh();
         }
         else
         {
             detailView.Show(itemData);
         }
+    }
+    
+    private void OnBackpackSlotClicked(ItemData itemData)
+    {
+        _service.MoveToStorage(itemData);
+        Refresh();
     }
 }

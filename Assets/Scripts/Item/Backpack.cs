@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+[Serializable]
 public class Backpack : IItemContainer
 {
     private List<ItemData> _items = new List<ItemData>();
@@ -15,7 +16,6 @@ public class Backpack : IItemContainer
     {
         if (IsFull) return;
         if (item == null) throw new ArgumentNullException(nameof(item));
-        if (_items.Contains(item)) throw new InvalidOperationException("Item already in backpack");
         
         
         _items.Add(item);

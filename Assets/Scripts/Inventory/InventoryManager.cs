@@ -18,7 +18,7 @@ public class InventoryManager : Singleton<InventoryManager>
         //InventoryCnt = ??;
         _slots = GetComponentsInChildren<InventorySlot>();
         
-        _backpackDatabase = Resources.Load<InventoryDatabase>("Items");
+        _backpackDatabase = Resources.Load<InventoryDatabase>("Items/UserBackPack");
     }
 
     public void AddItem(BaseItem item)
