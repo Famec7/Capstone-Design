@@ -66,7 +66,7 @@ public class StorageUIController : MonoBehaviour
         if (_service == null)
         {
             _service = new InventoryService();
-            _service.Load(capacity: 7);
+            _service.Load(capacity: 5);
         }
 
         foreach (var tab in categoryTabs)

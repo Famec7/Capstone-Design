@@ -13,7 +13,7 @@ public class Backpack : IItemContainer
     
     public void Add(ItemData item)
     {
-        if (IsFull) throw new InvalidOperationException("Backpack is full");
+        if (IsFull) return;
         if (item == null) throw new ArgumentNullException(nameof(item));
         if (_items.Contains(item)) throw new InvalidOperationException("Item already in backpack");
         

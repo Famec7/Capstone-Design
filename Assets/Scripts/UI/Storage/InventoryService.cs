@@ -10,39 +10,56 @@ public class InventoryService
     public Storage Storage { get; private set; }
     public Backpack Backpack { get; private set; }
     
+    private InventoryDatabase _backpackDatabase;
+    
     /**********페이징 상태***********/
     public int PageSize { get; }
     public int CurrentPage { get; private set; } = 1;
     
     /**********저장 경로***********/
-    private readonly string _filePath = Path.Combine(Application.dataPath, "Storage.json");
+    private readonly string _filePath = Path.Combine(Application.persistentDataPath, "Storage.json");
     
     public void Save()
     {
         var json = JsonUtility.ToJson(Storage.Items, true);
         File.WriteAllText(_filePath, json);
-        
-        // Todo: Save Backpack data
+
+        foreach (var item in Backpack.Items)
+        {
+            _backpackDatabase.AddItem(item);
+        }
     }
 
     public void Load(int capacity)
     {
-        if (!File.Exists(_filePath))
+        Storage = new Storage();
+        
+        if (File.Exists(_filePath))
         {
-            Debug.LogError($"File not found: {_filePath}");
+            var json = File.ReadAllText(_filePath);
+            var items = JsonUtility.FromJson<ItemData[]>(json);
+        
+            foreach (var item in items)
+            {
+                Storage.Add(item);
+            }
+        }
+        
+        Backpack = new Backpack(capacity);
+        _backpackDatabase = Resources.Load<InventoryDatabase>("Items");
+        
+        if (_backpackDatabase == null)
+        {
+            Debug.LogError("Backpack database not found");
             return;
         }
         
-        var json = File.ReadAllText(_filePath);
-        var items = JsonUtility.FromJson<ItemData[]>(json);
-        
-        Storage = new Storage();
-        foreach (var item in items)
+        foreach (var item in _backpackDatabase.Items)
         {
             Storage.Add(item);
         }
         
-        // Todo: Load Backpack data
+        _backpackDatabase.RemoveAllItems();
     }
     
     public IEnumerable<ItemData> GetFilteredSorted(ItemType filter, SortType sortType, bool ascending)
