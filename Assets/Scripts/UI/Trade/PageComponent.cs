@@ -13,12 +13,15 @@ public class PageComponent : MonoBehaviour
 
     // TradeManager의 Datas를 기준으로 총 페이지 수를 계산 (1기준)
     public int TotalPageCount = 0;
-
+    public bool isTrade = true;
     private void Start()
     {
-        TotalPageCount = TradeManager.Instance.Datas.Count / 4 + 1;
-        // 초기 페이지 번호(현재 1페이지, 1기준)로 버튼 구성
-        UpdatePaginationButtons(1);
+        if (isTrade)
+            TotalPageCount = TradeManager.Instance.Datas.Count / 4 + 1;
+        else
+            TotalPageCount = CollectionManager.Instance.collections.Count / 2 + 1;
+            // 초기 페이지 번호(현재 1페이지, 1기준)로 버튼 구성
+            UpdatePaginationButtons(1);
     }
 
     /// <summary>

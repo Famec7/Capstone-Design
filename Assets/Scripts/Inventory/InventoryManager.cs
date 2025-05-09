@@ -33,6 +33,18 @@ public class InventoryManager : Singleton<InventoryManager>
         }
     }
 
+    public void AddItem(ItemData data)
+    {
+        for (int i = 0; i < _slots.Length; i++)
+        {
+            if (_slots[i].IsEmpty)
+            {
+                _slots[i].SetItem(data);
+                break;
+            }
+        }
+    }    
+
     public BaseItem RemoveItem(int index)
     {
         if (index < 0 || index >= _slots.Length || _slots[index].IsEmpty)
