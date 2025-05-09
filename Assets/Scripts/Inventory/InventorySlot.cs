@@ -24,7 +24,7 @@ public class InventorySlot : MonoBehaviour
         SetSlotColor(item);
     }
 
-    public void SetITem(ItemData data)
+    public void SetItem(ItemData data)
     {
         SetItem(ItemFactory.Instance.CreateItem(data.ItemName));
     }
