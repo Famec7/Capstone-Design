@@ -67,12 +67,11 @@ public class FetchNFTData : MonoBehaviour
         TradeItemDataList trades = new TradeItemDataList();
         foreach (var nft in nftItemList.items)
         {
-            ItemData itemData = ItemDataManager.Instance.GetItemDataById(nft.item_id);
-            
+            var itemData = ItemDataManager.Instance.GetItemDataById(nft.item_id);
             TradeItemData tradeItemData = new TradeItemData
             {
-                ItemName = itemData.ItemName,
-                ItemType = itemData.ItemType,
+                TokenId = nft.token_id,
+                Data = itemData,
                 ItemPrice = float.Parse(nft.price_klay),
                 SellerWalletAddress = nft.seller,
                 LeftSeconds = nft.remaining_time,

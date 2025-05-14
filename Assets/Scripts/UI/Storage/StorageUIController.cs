@@ -49,6 +49,9 @@ public class StorageUIController : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI pageText;
     
+    [SerializeField]
+    private Button sellButton;
+    
     [Header("슬롯 부모")]
     [SerializeField]
     private Transform slotParent;
@@ -107,22 +110,27 @@ public class StorageUIController : MonoBehaviour
             _isDeleteMode = isOn;
             deleteToggle.image.color = _isDeleteMode ? Color.red : Color.white; 
         });
-        
-        addButton.onClick.AddListener(() =>
+
+
+        if (addButton)
         {
-            if (detailView.gameObject.activeSelf)
+            addButton.onClick.AddListener(() =>
             {
-                _service.MoveToBackPack(detailView.CurrentItemData);
-                
-                var slot = Instantiate(slotPrefab, backpackSlotParent);
-                slot.Bind(detailView.CurrentItemData, itemData =>
+                if (detailView.gameObject.activeSelf)
                 {
-                    OnBackpackSlotClicked(itemData);
-                    Destroy(slot.gameObject);
-                });
-            }
-            Refresh();
-        });
+                    _service.MoveToBackPack(detailView.CurrentItemData);
+
+                    var slot = Instantiate(slotPrefab, backpackSlotParent);
+                    slot.Bind(detailView.CurrentItemData, itemData =>
+                    {
+                        OnBackpackSlotClicked(itemData);
+                        Destroy(slot.gameObject);
+                    });
+                }
+
+                Refresh();
+            });
+        }
         
         prevButton.onClick.AddListener(() =>
         {
@@ -163,15 +171,15 @@ public class StorageUIController : MonoBehaviour
         }
     }
     
-    private void CreateSlot(ItemData itemData)
+    private void CreateSlot(TradeItemData itemData)
     {
         var slot = Instantiate(slotPrefab, slotParent);
         slot.Bind(itemData, OnSlotClicked);
             
-        slot.name = itemData.name;
+        slot.name = itemData.Data.name;
     }
 
-    private void OnSlotClicked(ItemData itemData)
+    private void OnSlotClicked(TradeItemData itemData)
     {
         if (_isDeleteMode)
         {
@@ -184,7 +192,7 @@ public class StorageUIController : MonoBehaviour
         }
     }
     
-    private void OnBackpackSlotClicked(ItemData itemData)
+    private void OnBackpackSlotClicked(TradeItemData itemData)
     {
         _service.MoveToStorage(itemData);
         Refresh();

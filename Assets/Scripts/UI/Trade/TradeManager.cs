@@ -10,8 +10,8 @@ using static UnityEngine.XR.Interaction.Toolkit.XRInteractionUpdateOrder;
 [Serializable]
 public class TradeItemData
 {
-    public string ItemName;
-    public ItemType ItemType;
+    public int TokenId;
+    public ItemData Data;
     public float ItemPrice;
     public string SellerWalletAddress;
     public int LeftSeconds;
@@ -199,7 +199,7 @@ public class TradeManager : Singleton<TradeManager>
     /// </summary>
     public void FilterByItemType(ItemType filterType)
     {
-        List<TradeItemData> filteredItems = Datas.Where(item => item.ItemType == filterType).ToList();
+        List<TradeItemData> filteredItems = Datas.Where(item => item.Data.ItemType == filterType).ToList();
         _currentDisplayItems = filteredItems;
         _currentFilter = filterType;
         int totalPages = filteredItems.Count / PreviewCounts + (filteredItems.Count % PreviewCounts != 0 ? 1 : 0);

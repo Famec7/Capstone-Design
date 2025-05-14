@@ -25,7 +25,7 @@ public class StorageDetailView : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI itemValueText;
 
-    public ItemData CurrentItemData { get; private set; }
+    public TradeItemData CurrentItemData { get; private set; }
 
     private void Awake()
     {
@@ -55,15 +55,15 @@ public class StorageDetailView : MonoBehaviour
         }
     }
 
-    public void Show(ItemData itemData)
+    public void Show(TradeItemData itemData)
     {
         CurrentItemData = itemData;
         
-        itemIcon.sprite = itemData.ItemIcon;
-        itemNameText.text = $"<b>이름</b>                   {itemData.ItemName}";
-        itemTypeText.text = $"<b>분류</b>                   {itemData.ItemType}";
-        itemValueText.text = $"<b>가치</b>                   {itemData.ItemValue}G";
-        itemDescriptionText.text = $"<b>설명</b>\n{itemData.ItemDescription}";
+        itemIcon.sprite = itemData.Data.ItemIcon;
+        itemNameText.text = $"<b>이름</b>                   {itemData.Data.ItemName}";
+        itemTypeText.text = $"<b>분류</b>                   {itemData.Data.ItemType}";
+        itemValueText.text = $"<b>가치</b>                   {itemData.ItemPrice}G";
+        itemDescriptionText.text = $"<b>설명</b>\n{itemData.Data.ItemDescription}";
         gameObject.SetActive(true);
     }
     

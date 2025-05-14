@@ -28,10 +28,10 @@ public class InventoryService
 
     public void Save()
     {
-        var itemSaveList = new List<int>();
+        var itemSaveList = new List<TradeItemData>();
         foreach (var item in Storage.Items)
         {
-            itemSaveList.Add(item.ItemId);
+            itemSaveList.Add(item);
         }
         
         var json = JsonUtility.ToJson(itemSaveList, true);
@@ -49,15 +49,12 @@ public class InventoryService
 
         if (File.Exists(_filePath))
         {
-            var itemSaveList = new List<int>();
-            
             var json = File.ReadAllText(_filePath);
-            var items = JsonUtility.FromJson<List<int>>(json);
+            var items = JsonUtility.FromJson<List<TradeItemData>>(json);
 
             foreach (var item in items)
             {
-                var itemData = ItemDataManager.Instance.GetItemDataById(item);
-                Storage.Add(itemData);
+                Storage.Add(item);
             }
         }
 
@@ -80,31 +77,31 @@ public class InventoryService
         _backpackDatabase.RemoveAllItems();
     }
 
-    public IEnumerable<ItemData> GetFilteredSorted(ItemType filter, SortType sortType, bool ascending)
+    public IEnumerable<TradeItemData> GetFilteredSorted(ItemType filter, SortType sortType, bool ascending)
     {
         if (Storage.Items == null)
         {
-            return Enumerable.Empty<ItemData>();
+            return Enumerable.Empty<TradeItemData>();
         }
         
         var query = Storage.Items.AsEnumerable();
 
         if (filter != ItemType.None)
         {
-            query = query.Where(item => item.ItemType == filter);
+            query = query.Where(item => item.Data.ItemType == filter);
         }
 
         switch (sortType)
         {
             case SortType.Name:
                 query = ascending
-                    ? query.OrderBy(item => item.ItemName)
-                    : query.OrderByDescending(item => item.ItemName);
+                    ? query.OrderBy(item => item.Data.ItemName)
+                    : query.OrderByDescending(item => item.Data.ItemName);
                 break;
             case SortType.Value:
                 query = ascending
-                    ? query.OrderBy(item => item.ItemValue)
-                    : query.OrderByDescending(item => item.ItemValue);
+                    ? query.OrderBy(item => item.ItemPrice)
+                    : query.OrderByDescending(item => item.ItemPrice);
                 break;
             default:
                 break;
@@ -124,7 +121,7 @@ public class InventoryService
         }
     }
 
-    public IEnumerable<ItemData> GetCurrentPageItems(ItemType filter, SortType sortType, bool ascending)
+    public IEnumerable<TradeItemData> GetCurrentPageItems(ItemType filter, SortType sortType, bool ascending)
     {
         return GetFilteredSorted(filter, sortType, ascending)
             .Skip((CurrentPage - 1) * PageSize)
@@ -157,7 +154,7 @@ public class InventoryService
         }
     }
 
-    public void MoveToBackPack(ItemData item)
+    public void MoveToBackPack(TradeItemData item)
     {
         if (Backpack.IsFull)
         {
@@ -168,13 +165,13 @@ public class InventoryService
         Backpack.Add(item);
     }
 
-    public void MoveToStorage(ItemData item)
+    public void MoveToStorage(TradeItemData item)
     {
         Backpack.Remove(item);
         Storage.Add(item);
     }
 
-    public void DeleteItem(ItemData item)
+    public void DeleteItem(TradeItemData item)
     {
         Storage.Remove(item);
     }

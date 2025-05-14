@@ -4,15 +4,15 @@ using System.Collections.Generic;
 [Serializable]
 public class Backpack : IItemContainer
 {
-    private List<ItemData> _items = new List<ItemData>();
+    private List<TradeItemData> _items = new List<TradeItemData>();
     public int Capacity { get; }
-    public IReadOnlyList<ItemData> Items => _items;
+    public IReadOnlyList<TradeItemData> Items => _items;
 
     public Backpack(int capacity) { Capacity = capacity; }
 
     public bool IsFull => _items.Count >= Capacity;
     
-    public void Add(ItemData item)
+    public void Add(TradeItemData item)
     {
         if (IsFull) return;
         if (item == null) throw new ArgumentNullException(nameof(item));
@@ -20,7 +20,7 @@ public class Backpack : IItemContainer
         
         _items.Add(item);
     }
-    public void Remove(ItemData item)
+    public void Remove(TradeItemData item)
     {
         if (item == null) throw new ArgumentNullException(nameof(item));
         if (!_items.Contains(item)) throw new InvalidOperationException("Item not found in backpack");

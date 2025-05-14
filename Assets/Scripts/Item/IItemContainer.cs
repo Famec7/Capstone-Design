@@ -2,7 +2,7 @@
 
 public interface IItemContainer
 {
-    IReadOnlyList<ItemData> Items { get; }
-    void Add(ItemData item);
-    void Remove(ItemData item);
+    IReadOnlyList<TradeItemData> Items { get; }
+    void Add(TradeItemData item);
+    void Remove(TradeItemData item);
 }

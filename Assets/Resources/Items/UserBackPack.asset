@@ -13,5 +13,13 @@ MonoBehaviour:
   m_Name: UserBackPack
   m_EditorClassIdentifier: 
   items:
-  - {fileID: 11400000, guid: 6d95710c0c5c6d54bbf0053af88668a4, type: 2}
-  - {fileID: 11400000, guid: f72079adc96b94f4fa147ee46f9708aa, type: 2}
+  - TokenId: 1
+    Data: {fileID: 11400000, guid: 6d95710c0c5c6d54bbf0053af88668a4, type: 2}
+    ItemPrice: 0
+    SellerWalletAddress: 
+    LeftSeconds: 3
+  - TokenId: 2
+    Data: {fileID: 11400000, guid: f72079adc96b94f4fa147ee46f9708aa, type: 2}
+    ItemPrice: 0
+    SellerWalletAddress: 
+    LeftSeconds: 2

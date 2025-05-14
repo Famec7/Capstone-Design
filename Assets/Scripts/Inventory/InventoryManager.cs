@@ -116,7 +116,9 @@ public class InventoryManager : Singleton<InventoryManager>
         {
             if (!slot.IsEmpty)
             {
-                _backpackDatabase.AddItem(slot.Data);
+                TradeItemData itemData = null;
+                // Todo: NFT 발행
+                _backpackDatabase.AddItem(itemData);
             }
         }
     }
