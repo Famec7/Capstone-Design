@@ -28,4 +28,17 @@ public class DetailedDescriptionSection : MonoBehaviour
         DescriptionText.text = "Detailed Description";
         CategoryText.text = Data.ItemType.ToString();
     }
+
+    public void SetDetailedDescriptionSection(ItemData Data)
+    {
+        ItemImage.gameObject.SetActive(true);
+        NameText.gameObject.SetActive(true);
+        DescriptionText.gameObject.SetActive(true);
+        CategoryText.gameObject.SetActive(true);
+
+        NameText.text = Data.ItemName;
+        // 임시
+        DescriptionText.text = Data.ItemDescription;
+        CategoryText.text = Data.ItemType.ToString();
+    }
 }

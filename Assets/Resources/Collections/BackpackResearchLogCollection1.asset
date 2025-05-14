@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a25eb9fbabe26847b23b6b9ec4cf6e1, type: 3}
+  m_Name: BackpackResearchLogCollection1
+  m_EditorClassIdentifier: 
+  collectionName: "\uBC31\uD329 \uC5F0\uAD6C \uC77C\uC9C0 \uCEEC\uB809\uC158 1"
+  collectionDescription: "\uBC31\uD329 \uD06C\uAE30 3\uCE78 \uC99D\uAC00"
+  requiredItems:
+  - {fileID: 11400000, guid: d44f8d07fa13cec4692816097d5a7bde, type: 2}
+  - {fileID: 11400000, guid: 2848e482ec3ebd944bd5a46b966e1c5c, type: 2}
+  - {fileID: 11400000, guid: c18c87e716046464f8d6555ead61837f, type: 2}
+  - {fileID: 11400000, guid: 4c9c07a6f61e4c442977018f3f8d8aa0, type: 2}
+  - {fileID: 11400000, guid: ef5e35fb71cbfd24193e96054e14dbfa, type: 2}
+  reward: {fileID: 11400000, guid: c3168e77e050af046ab6142c5b06aff1, type: 2}

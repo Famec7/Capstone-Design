@@ -1,25 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class Collection
-{
-    public TradeItemData[] material;
-    public string CollectionName;
-    public string RewardText;
-}
 
 public class CollectionManager : Singleton<CollectionManager>
 {
 
     public DetailedDescriptionSection DetailedDescriptionSection;
-    public List<Collection> collections;
+    public List<CatalogCollection> collections;
     public GameObject CollectionPrefab;
 
     [SerializeField]
     private Transform _contentParent;
 
-    private List<Collection> _currentDisplayCollections;
+    private List<CatalogCollection> _currentDisplayCollections;
     private CollectionSlot[] _collectionPreviews;
     private int _currentPage = 0;
     public int PreviewCounts = 2;
@@ -46,7 +41,7 @@ public class CollectionManager : Singleton<CollectionManager>
     /// </summary>
     public void UpdateUI()
     {
-        _currentDisplayCollections = new List<Collection>(collections);
+        _currentDisplayCollections = new List<CatalogCollection>(collections);
         int totalPages = _currentDisplayCollections.Count / PreviewCounts
             + (_currentDisplayCollections.Count % PreviewCounts != 0 ? 1 : 0);
         _pageComponent.TotalPageCount = totalPages;
@@ -64,8 +59,24 @@ public class CollectionManager : Singleton<CollectionManager>
             int dataIndex = startIndex + i;
             if (dataIndex < _currentDisplayCollections.Count)
             {
-                _collectionPreviews[i].gameObject.SetActive(true);
-                _collectionPreviews[i].SetValid(_currentDisplayCollections[dataIndex]);
+                var slot = _collectionPreviews[i];
+                slot.gameObject.SetActive(true);
+                slot.SetValid(_currentDisplayCollections[dataIndex]);
+
+                // 상세 설명 버튼 바인딩
+                int idx = i; // 클로저 보호
+                foreach (var matSlot in slot.Slots)
+                {
+                    var required = _currentDisplayCollections[dataIndex].requiredItems[idx];
+                    matSlot.GetComponent<Button>()
+                        .onClick.RemoveAllListeners();
+                    matSlot.GetComponent<Button>()
+                        .onClick.AddListener(() =>
+                            DetailedDescriptionSection
+                                .SetDetailedDescriptionSection(required)
+                        );
+                    idx++;
+                }
             }
             else
             {

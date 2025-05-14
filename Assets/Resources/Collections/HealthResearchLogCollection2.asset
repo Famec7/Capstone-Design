@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a25eb9fbabe26847b23b6b9ec4cf6e1, type: 3}
+  m_Name: HealthResearchLogCollection2
+  m_EditorClassIdentifier: 
+  collectionName: "\uC0DD\uBA85\uB825 \uC5F0\uAD6C \uC77C\uC9C0 \uCEEC\uB809\uC158
+    2"
+  collectionDescription: "\uC0DD\uBA85\uB825 \uCD5C\uB300\uCE58 50% \uC99D\uAC00"
+  requiredItems:
+  - {fileID: 11400000, guid: 74b1ca937d419b84b82c8952cd3acc90, type: 2}
+  - {fileID: 11400000, guid: b13c6c6e63ec4d2428075722e28845ab, type: 2}
+  - {fileID: 11400000, guid: 349d2cca35f25c84da8827f6da2b9e7a, type: 2}
+  - {fileID: 11400000, guid: 58f98a73a9fd0a9469294a27dd55da6a, type: 2}
+  - {fileID: 11400000, guid: 74b1ca937d419b84b82c8952cd3acc90, type: 2}
+  reward: {fileID: 11400000, guid: 8bceb56cb1ca8ea49a5587a3131ff1e6, type: 2}

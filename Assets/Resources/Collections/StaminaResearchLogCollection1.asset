@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a25eb9fbabe26847b23b6b9ec4cf6e1, type: 3}
+  m_Name: StaminaResearchLogCollection1
+  m_EditorClassIdentifier: 
+  collectionName: "\uC2A4\uD0DC\uBBF8\uB098 \uC5F0\uAD6C \uC77C\uC9C0 \uCEEC\uB809\uC158
+    1 "
+  collectionDescription: "\uC2A4\uD0DC\uBBF8\uB098 \uCD5C\uB300\uCE58 50% \uC99D\uAC00"
+  requiredItems:
+  - {fileID: 11400000, guid: ef5fbe450a2597d4fad2c84cc33bed03, type: 2}
+  - {fileID: 11400000, guid: adda24370f43a0d45875c17f46f9dad2, type: 2}
+  - {fileID: 11400000, guid: dd27e299ebaf29743a3c675ce30b459a, type: 2}
+  - {fileID: 11400000, guid: e86e420d68035c142b033585aba4dc21, type: 2}
+  - {fileID: 11400000, guid: ceca0f176c2fe4a4d877a4548e639cfc, type: 2}
+  reward: {fileID: 11400000, guid: aed96bd126f077a41b39bd4aae8549f7, type: 2}
