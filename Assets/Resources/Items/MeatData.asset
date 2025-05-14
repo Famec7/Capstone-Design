@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37dae52f3f7fd724e8fa5a9783f95305, type: 3}
+  m_Name: MeatData
+  m_EditorClassIdentifier: 
+  ItemId: 3001
+  ItemName: "\uACE0\uAE30"
+  ItemDescription: 
+  ItemType: 1
+  ItemValue: 10
+  ItemIcon: {fileID: 21300000, guid: c2a77d1347c0e244a84fb363f5c89ee9, type: 3}
+  ItemModel: {fileID: 2629127272418962556, guid: 8dc465f46b6c8b242be3b0a23bd18bf1, type: 3}
+  AttackPower: 0
+  IsNFT: 1
