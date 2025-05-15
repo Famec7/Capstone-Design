@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -9,6 +10,22 @@ public class NFTManager : Singleton<NFTManager>
 {
     /************ API JSON ***********/
     #region API JSON
+    
+    [System.Serializable]
+    public class MintNFTRequest
+    {
+        public string toAddress;
+        public int itemID;
+        public string uri;
+    }
+    
+    [System.Serializable]
+    public class MintResponse
+    {
+        public bool success;
+        public string tx_hash;
+        public NFTItem item;
+    }
 
     [System.Serializable]
     public class BuyNFTRequest
@@ -65,6 +82,50 @@ public class NFTManager : Singleton<NFTManager>
         request.SetRequestHeader("Content-Type", "application/json");
 
         return request;
+    }
+    
+    /************ NFT 발행 ***********/
+    
+    /// <summary>
+    /// NFT 발행 요청
+    /// </summary>
+    /// <param name="itemID"> 발행할 아이템 ID </param>
+    /// <param name="callback"> 발행 완료 후 호출할 콜백 </param>
+    public void MintNFT(int itemID, Action<NFTItem> callback)
+    {
+        StartCoroutine(IE_MintNFT(itemID, callback));
+    }
+
+    private IEnumerator IE_MintNFT(int itemID, Action<NFTItem> callback)
+    {
+        const string url = "http://13.125.167.56:8000/api/nft/mint/";
+        
+        var data = ItemDataManager.Instance.GetItemDataById(itemID);
+        MintNFTRequest mintRequest = new MintNFTRequest
+        {
+            toAddress = walletAddress.Address,
+            itemID = itemID,
+            uri = data.URL
+        };
+        
+        string jsonData = JsonUtility.ToJson(mintRequest);
+        var request = Post(url, jsonData);
+        
+        yield return request.SendWebRequest();
+        
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            MintResponse responseData = JsonUtility.FromJson<MintResponse>(request.downloadHandler.text);
+            callback?.Invoke(responseData.item);
+            
+#if UNITY_EDITOR
+            Debug.Log("NFT 발행 요청 성공: " + request.downloadHandler.text + responseData.item);
+#endif
+        }
+        else
+        {
+            Debug.LogError("NFT 발행 요청 실패: " + request.error);
+        }
     }
 
     /************ NFT 마켓 등록 ***********/

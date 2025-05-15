@@ -12,6 +12,9 @@ public class FetchNFTData : MonoBehaviour
     [Header("특정 유저 정보 조회 API")] [SerializeField]
     private string userApiUrl = "http://13.125.167.56:8000/api/nft/getUserItems/";
 
+    [Header("특정 유저 마켓 정보 조회 API")] [SerializeField]
+    private string userMarketApiUrl = "http://13.125.167.56:8000/api/nft/getListedUserItem/";
+
     [Header("저장할 JSON 파일 이름")] [SerializeField]
     private string fileName = "NFTData.json";
 
@@ -89,6 +92,34 @@ public class FetchNFTData : MonoBehaviour
         _refreshCoroutine = null;
     }
 
+    /// <summary>
+    /// 특정 유저의 NFT 데이터 조회
+    /// </summary>
+    /// <param name="callback"> 데이터 로딩 완료시 호출하는 Action </param>
+    public void FetchUserNFTData(Action<List<NFTItem>> callback)
+    {
+        StartCoroutine(IE_FetchUserItem(callback));
+    }
+
+    private IEnumerator IE_FetchUserItem(Action<List<NFTItem>> callback)
+    {
+        UnityWebRequest request = UnityWebRequest.Get(userApiUrl);
+        yield return request.SendWebRequest();
+        
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.Log(request.error + "Error fetching User NFTData");
+            yield break;
+        }
+        
+        NFTItemList nftItemList = JsonUtility.FromJson<NFTItemList>(request.downloadHandler.text);
+        if (nftItemList == null && nftItemList.items.Count == 0)
+        {
+            yield break;
+        }
+        callback?.Invoke(nftItemList.items);
+    }
+
     private IEnumerator IE_AutoRenewNFTData()
     {
         while (true)
@@ -104,6 +135,7 @@ public class FetchNFTData : MonoBehaviour
 [Serializable]
 public class NFTItemList
 {
+    public bool success;
     public List<NFTItem> items;
 }
 

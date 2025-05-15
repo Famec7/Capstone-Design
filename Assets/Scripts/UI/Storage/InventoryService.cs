@@ -12,6 +12,8 @@ public class InventoryService
     public Backpack Backpack { get; private set; }
 
     private InventoryDatabase _backpackDatabase;
+    
+    private int _backpackCapacity;
 
     /**********페이징 상태***********/
     public int PageSize { get; }
@@ -19,46 +21,40 @@ public class InventoryService
 
     /**********저장 경로***********/
     private readonly string _filePath = Path.Combine(Application.persistentDataPath, "Storage.json");
-    
+
     public InventoryService(int pageSize, int backpackCapacity)
     {
         PageSize = pageSize;
-        Load(backpackCapacity);
+        _backpackCapacity = backpackCapacity;
     }
 
     public void Save()
     {
-        var itemSaveList = new List<TradeItemData>();
-        foreach (var item in Storage.Items)
-        {
-            itemSaveList.Add(item);
-        }
-        
-        var json = JsonUtility.ToJson(itemSaveList, true);
-        File.WriteAllText(_filePath, json);
-
         foreach (var item in Backpack.Items)
         {
             _backpackDatabase.AddItem(item);
         }
     }
 
-    public void Load(int capacity)
+    public void Load(List<NFTItem> items)
     {
         Storage = new Storage();
 
-        if (File.Exists(_filePath))
+        foreach (var item in items)
         {
-            var json = File.ReadAllText(_filePath);
-            var items = JsonUtility.FromJson<List<TradeItemData>>(json);
-
-            foreach (var item in items)
+            var tradeItem = new TradeItemData()
             {
-                Storage.Add(item);
-            }
+                TokenId = item.token_id,
+                Data = ItemDataManager.Instance.GetItemDataById(item.item_id),
+                ItemPrice = float.Parse(item.price_klay),
+                SellerWalletAddress = item.seller,
+                LeftSeconds = item.remaining_time,
+            };
+
+            Storage.Add(tradeItem);
         }
 
-        Backpack = new Backpack(capacity);
+        Backpack = new Backpack(_backpackCapacity);
         _backpackDatabase = Resources.Load<InventoryDatabase>("Items/UserBackPack");
 
         if (_backpackDatabase == null)
@@ -83,7 +79,7 @@ public class InventoryService
         {
             return Enumerable.Empty<TradeItemData>();
         }
-        
+
         var query = Storage.Items.AsEnumerable();
 
         if (filter != ItemType.None)
@@ -170,7 +166,7 @@ public class InventoryService
         Backpack.Remove(item);
         Storage.Add(item);
     }
-    
+
     public void AddItem(TradeItemData item)
     {
         if (item == null) return;

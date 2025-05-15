@@ -90,6 +90,10 @@ public class StorageUIController : MonoBehaviour
     [SerializeField]
     private int pageSize = 20;
     
+    [Header("중계 서버")]
+    [SerializeField]
+    private FetchNFTData fetchNFTData;
+    
     private bool _isDeleteMode = false;
     private bool _isSortAscending = true;
     private ItemType _currentItemType = ItemType.None;
@@ -106,7 +110,12 @@ public class StorageUIController : MonoBehaviour
     private void Start()
     {
         Bind();
-        Refresh();
+        fetchNFTData.FetchUserNFTData(
+            items =>
+            {
+                _service.Load(items);
+                Refresh();
+            });
     }
 
     /// <summary>
@@ -253,5 +262,20 @@ public class StorageUIController : MonoBehaviour
     {
         _service.MoveToStorage(itemData);
         Refresh();
+    }
+
+    private void OnDisable()
+    {
+        _service.Save();
+    }
+
+    private void OnEnable()
+    {
+        fetchNFTData.FetchUserNFTData(
+            items =>
+            {
+                _service.Load(items);
+                Refresh();
+            });
     }
 }

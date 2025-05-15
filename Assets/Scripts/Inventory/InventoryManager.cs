@@ -10,14 +10,14 @@ public class InventoryManager : Singleton<InventoryManager>
     [SerializeField] private InventorySlot[] _slots;
 
     public InventorySlot[] Slots => _slots; // 읽기 전용 프로퍼티
-    
+
     private InventoryDatabase _backpackDatabase;
 
     protected override void Init()
     {
         //InventoryCnt = ??;
         _slots = GetComponentsInChildren<InventorySlot>();
-        
+
         _backpackDatabase = Resources.Load<InventoryDatabase>("Items/UserBackPack");
     }
 
@@ -114,12 +114,24 @@ public class InventoryManager : Singleton<InventoryManager>
 
         foreach (var slot in _slots)
         {
-            if (!slot.IsEmpty)
+            if (slot.IsEmpty)
+                continue;
+
+            TradeItemData itemData = null;
+
+            NFTManager.Instance.MintNFT(slot.Data.ItemId, (item) =>
             {
-                TradeItemData itemData = null;
-                // Todo: NFT 발행
-                _backpackDatabase.AddItem(itemData);
-            }
+                itemData = new TradeItemData
+                {
+                    TokenId = item.token_id,
+                    Data = slot.Data,
+                    ItemPrice = float.Parse(item.price_klay),
+                    SellerWalletAddress = item.seller,
+                    LeftSeconds = item.remaining_time,
+                };
+            });
+
+            _backpackDatabase.AddItem(itemData);
         }
     }
 

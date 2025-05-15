@@ -24,6 +24,10 @@ public class StorageDetailView : MonoBehaviour
     [Header("아이템 가치")]
     [SerializeField]
     private TextMeshProUGUI itemValueText;
+    
+    [Header("남은 시간")]
+    [SerializeField]
+    private TextMeshProUGUI remainingTimeText;
 
     public TradeItemData CurrentItemData { get; private set; }
 
@@ -64,6 +68,20 @@ public class StorageDetailView : MonoBehaviour
         itemTypeText.text = $"<b>분류</b>                   {itemData.Data.ItemType}";
         itemValueText.text = $"<b>가치</b>                   {itemData.ItemPrice}G";
         itemDescriptionText.text = $"<b>설명</b>\n{itemData.Data.ItemDescription}";
+
+        if (remainingTimeText != null)
+        {
+            float hour = itemData.LeftSeconds / 3600;
+            float minute = (itemData.LeftSeconds % 3600) / 60;
+
+            if (hour <= 1)
+            {
+                remainingTimeText.color = Color.red;
+            }
+            
+            remainingTimeText.text = $"<b>남은 시간</b>   {hour:00}:{minute:00}";
+        }
+        
         gameObject.SetActive(true);
     }
     
