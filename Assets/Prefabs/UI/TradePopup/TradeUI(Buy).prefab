@@ -2602,7 +2602,6 @@ GameObject:
   - component: {fileID: 3244630971359562360}
   - component: {fileID: 2803089565006925429}
   - component: {fileID: 3977029164660666272}
-  - component: {fileID: 3358451043730987758}
   m_Layer: 5
   m_Name: TradeUI(Buy)
   m_TagString: Untagged
@@ -2628,7 +2627,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -4.44, y: 2.72}
+  m_AnchoredPosition: {x: -4.4400024, y: 2.7199707}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &3244630971359562360
@@ -2676,7 +2675,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &3977029164660666272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2696,22 +2695,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RaycastTriggerInteraction: 1
---- !u!114 &3358451043730987758
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6494769451110442507}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c3bfc43618c4827832b49ef76c84b88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  listNFTButton: {fileID: 0}
-  buyNFTButton: {fileID: 7200763068214423567}
-  klipRequest: {fileID: 679168541333031298}
-  walletAddress: {fileID: 11400000, guid: 0ed30885b5f804848844376b8b7cdec0, type: 2}
 --- !u!1 &7021849790167519741
 GameObject:
   m_ObjectHideFlags: 0
@@ -3041,7 +3024,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2213758074236787305}
   m_HandleRect: {fileID: 3922858087736215277}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

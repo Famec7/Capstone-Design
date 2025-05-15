@@ -5,17 +5,8 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class NFTUIController : MonoBehaviour
+public class NFTManager : Singleton<NFTManager>
 {
-    /************ UI 요소 ***********/
-    # region UI Buttons
-
-    [Header("거래 등록 버튼")] [SerializeField] private Button listNFTButton;
-
-    [Header("거래 구매 버튼")] [SerializeField] private Button buyNFTButton;
-    
-    #endregion
-    
     /************ API JSON ***********/
     #region API JSON
 
@@ -44,36 +35,26 @@ public class NFTUIController : MonoBehaviour
     public class ListNFTRequest
     {
         public int tokenID;
-        public int price;
+        public float price;
         public string sellerAddress;
         public int listingDuration;
     }
 
     #endregion
     
-    [Header("Klip 요청 API")] [SerializeField]
-    private KlipRequest klipRequest;
+    protected override void Init()
+    {
+        walletAddress = Resources.Load<WalletAddress>("UserData/UserWallet");
+        
+        if (walletAddress == null)
+        {
+            Debug.LogError("지갑 주소를 찾을 수 없습니다.");
+            return;
+        }
+    }
+    
     [Header("유저 지갑 주소")][SerializeField]
     private WalletAddress walletAddress;
-
-    private void Start()
-    {
-        if (buyNFTButton == null)
-        {
-            Debug.LogError("buyNFTButton이 inspector에서 할당되지 않았습니다.");
-            return;
-        }
-        
-        buyNFTButton.onClick.AddListener(() => StartCoroutine(IE_RequestBuyNFT(7)));
-        
-        if (listNFTButton == null)
-        {
-            Debug.LogError("listNFTButton이 inspector에서 할당되지 않았습니다.");
-            return;
-        }
-        
-        listNFTButton.onClick.AddListener(() => StartCoroutine(IE_ListNFT(0, 0, 0)));
-    }
     
     private UnityWebRequest Post(string url, string jsonData)
     {
@@ -87,7 +68,16 @@ public class NFTUIController : MonoBehaviour
     }
 
     /************ NFT 마켓 등록 ***********/
-    private IEnumerator IE_ListNFT(int tokenID, int price, int duration)
+    public void ListNFT(int tokenID, float price, int duration = 72)
+    {
+#if UNITY_EDITOR
+        Debug.Log($"NFT 등록 요청: tokenID={tokenID}, price={price}, duration={duration}");
+#endif
+        
+        StartCoroutine(IE_ListNFT(tokenID, price, duration));
+    }
+    
+    private IEnumerator IE_ListNFT(int tokenID, float price, int duration = 72)
     {
         const string url = "http://13.125.167.56:8000/api/nft/listNFT/";
         
@@ -115,7 +105,15 @@ public class NFTUIController : MonoBehaviour
     }
 
 	/************ NFT 구매 요청 ***********/
-    private IEnumerator IE_RequestBuyNFT(int tokenID)
+    public void BuyNFT(int tokenID, KlipRequest klipRequest)
+    {
+#if UNITY_EDITOR
+        Debug.Log($"NFT 구매 요청: tokenID={tokenID}");
+#endif
+        StartCoroutine(IE_RequestBuyNFT(tokenID, klipRequest));
+    }
+    
+    private IEnumerator IE_RequestBuyNFT(int tokenID, KlipRequest klipRequest)
     {
         const string url = "http://13.125.167.56:8000/api/nft/buyNFT/";
         

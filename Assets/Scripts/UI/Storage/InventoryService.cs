@@ -170,6 +170,13 @@ public class InventoryService
         Backpack.Remove(item);
         Storage.Add(item);
     }
+    
+    public void AddItem(TradeItemData item)
+    {
+        if (item == null) return;
+
+        Storage.Add(item);
+    }
 
     public void DeleteItem(TradeItemData item)
     {

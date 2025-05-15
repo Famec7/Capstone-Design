@@ -17,6 +17,8 @@ public class StorageUIController : MonoBehaviour
 {
     private InventoryService _service = null;
 
+    # region UI View
+    
     [Header("UI View")]
     [SerializeField]
     private StorageSlotView slotPrefab;
@@ -26,6 +28,10 @@ public class StorageUIController : MonoBehaviour
     
     [SerializeField]
     private CategoryTabView[] categoryTabs;
+    
+    # endregion
+    
+    # region UI 요소
     
     [Header("UI 요소")]
     [SerializeField]
@@ -52,12 +58,33 @@ public class StorageUIController : MonoBehaviour
     [SerializeField]
     private Button sellButton;
     
+    [SerializeField]
+    private InputField sellPriceInputField;
+    
+    # endregion
+    
+    # region Slot 부모
+    
     [Header("슬롯 부모")]
     [SerializeField]
     private Transform slotParent;
     
     [SerializeField]
     private Transform backpackSlotParent;
+    
+    # endregion
+    
+    # region 팝업 UI
+    
+    [Header("판매 완료 팝업")]
+    [SerializeField]
+    private AutoHidePopup sellCompletePopup;
+    
+    [Header("가격 오류 팝업")]
+    [SerializeField]
+    private AutoHidePopup priceErrorPopup;
+    
+    # endregion
     
     [Header("Page 하나 당 아이템 수")]
     [SerializeField]
@@ -82,6 +109,9 @@ public class StorageUIController : MonoBehaviour
         Refresh();
     }
 
+    /// <summary>
+    /// UI 요소와 이벤트를 바인딩합니다.
+    /// </summary>
     private void Bind()
     {
         foreach (var tab in categoryTabs)
@@ -131,6 +161,30 @@ public class StorageUIController : MonoBehaviour
                 Refresh();
             });
         }
+
+        if (sellButton)
+        {
+            sellButton.onClick.AddListener(() =>
+            {
+                if (detailView.gameObject.activeSelf)
+                {
+                    TradeItemData itemData = detailView.CurrentItemData;
+                    
+                    if (float.TryParse( sellPriceInputField.text, out float price))
+                    {
+                        itemData.ItemPrice = float.Parse(sellPriceInputField.text);
+                        NFTManager.Instance.ListNFT(itemData.TokenId, itemData.ItemPrice);
+                        _service.DeleteItem(itemData);
+                        Refresh();
+                        sellCompletePopup.ShowPopup();
+                    }
+                    else
+                    {
+                        priceErrorPopup.ShowPopup();
+                    }
+                }
+            });
+        }
         
         prevButton.onClick.AddListener(() =>
         {
@@ -145,6 +199,9 @@ public class StorageUIController : MonoBehaviour
         });
     }
 
+    /// <summary>
+    /// UI를 갱신합니다.
+    /// </summary>
     private void Refresh()
     {
         ClearSlots();
