@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37dae52f3f7fd724e8fa5a9783f95305, type: 3}
-  m_Name: BandageData
+  m_Name: WrenchData
   m_EditorClassIdentifier: 
-  ItemId: 3005
-  ItemName: "\uBD95\uB300"
-  ItemDescription: "\uC0DD\uBA85\uB825 25 \uD68C\uBCF5"
-  ItemType: 1
-  ItemValue: 50
-  ItemIcon: {fileID: 21300000, guid: 7c889bca65f69554991df53f6cc1d6a6, type: 3}
-  ItemModel: {fileID: 216043043027239904, guid: b2ca064993d295c48bc82d03be79531a, type: 3}
+  ItemId: 1008
+  ItemName: "\uB80C\uCE58"
+  ItemDescription: 
+  ItemType: 0
+  ItemValue: 40
+  ItemIcon: {fileID: 21300000, guid: 67788177fef4c7345ba666513086da83, type: 3}
+  ItemModel: {fileID: 8010904881565926004, guid: 38c8e93fabc5887448f6592869f6799c, type: 3}
   AttackPower: 0
   IsNFT: 1
