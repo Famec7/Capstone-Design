@@ -67,4 +67,17 @@ public class ToolUI : MonoBehaviour
         _slot.GetComponent<RectTransform>().localScale = Vector3.one;
         _slot.GetComponent<Image>().color = Color.black;
     }
+
+    public void AbleSlot(ToolSlot _slot)
+    {
+        Image fillImage = _slot.transform.GetChild(0).GetComponent<Image>();
+        Image toolImage = _slot.transform.GetChild(1).GetComponent<Image>();
+
+        fillImage.color = new Color32(157 , 195, 230,255);
+        toolImage.color = new Color(0, 0, 0, 255);
+
+        _slot.GetComponent<RectTransform>().localScale = Vector3.one;
+        _slot.GetComponent<Image>().color = Color.black;
+        _slot.IsSelect = false;
+    }
 }

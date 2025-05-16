@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 
-public class ToolSlot : MonoBehaviour,IPointerEnterHandler, IPointerExitHandler
+public class ToolSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField]
     private InputActionReference _gripAction1;
@@ -15,14 +15,16 @@ public class ToolSlot : MonoBehaviour,IPointerEnterHandler, IPointerExitHandler
     [SerializeField]
     private ItemData _data;
 
-    private ToolUI _toolUI;
+    public ToolUI ToolUI;
     private bool _isHovered = false;
 
     public bool IsSelect;
 
+    public GameObject Tool;
+
     private void Awake()
     {
-        _toolUI= transform.parent.parent.GetComponent<ToolUI>();
+        ToolUI = transform.parent.parent.GetComponent<ToolUI>();
     }
 
     private void OnEnable()
@@ -42,12 +44,13 @@ public class ToolSlot : MonoBehaviour,IPointerEnterHandler, IPointerExitHandler
 
     private void OnGripPerformed(InputAction.CallbackContext ctx)
     {
-        if (_isHovered)
+        if (_isHovered && !IsSelect)
         {
-            BaseItem item = ItemFactory.Instance.CreateItem(_data.ItemName);
-            item.gameObject.transform.position = transform.position;
+            Tool.SetActive(true);
+            AttachToHand(Tool.GetComponent<BaseItem>());
+            Tool.transform.position = transform.position;
             IsSelect = true;
-            _toolUI.DisableSlot(this);
+            ToolUI.DisableSlot(this);
         }
     }
 
@@ -73,4 +76,21 @@ public class ToolSlot : MonoBehaviour,IPointerEnterHandler, IPointerExitHandler
         }
     }
 
+    private void AttachToHand(BaseItem item)
+    {
+        var grab = item.GetComponent<CustomGrabInteractable>();
+        if (grab == null) return;
+
+        item.IsInInventory = false;
+        item.transform.SetParent(null, true);
+        item.InitTransform();
+
+        var rb = item.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.isKinematic = false;
+            rb.useGravity = true;
+            rb.constraints = RigidbodyConstraints.None;
+        }
+    }
 }

@@ -24,6 +24,11 @@ public class InventorySlot : MonoBehaviour
         SetSlotColor(item);
     }
 
+    public void SetItem(ItemData data)
+    {
+        SetItem(ItemFactory.Instance.CreateItem(data.ItemName));
+    }
+
     /// <summary>
     /// 슬롯 배경색 지정해주는 함수
     /// </summary>

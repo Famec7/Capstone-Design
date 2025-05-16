@@ -8,17 +8,21 @@ public class InventoryManager : Singleton<InventoryManager>
     public int InventoryCnt = 10;
     public int SelectedSlotIndex = 0;
     [SerializeField] private InventorySlot[] _slots;
-    
+
     public InventorySlot[] Slots => _slots; // 읽기 전용 프로퍼티
+    
+    private InventoryDatabase _backpackDatabase;
+
     protected override void Init()
     {
         //InventoryCnt = ??;
-        _slots = GetComponentsInChildren<InventorySlot>(); 
+        _slots = GetComponentsInChildren<InventorySlot>();
+        
+        _backpackDatabase = Resources.Load<InventoryDatabase>("Items/UserBackPack");
     }
 
     public void AddItem(BaseItem item)
     {
-
         for (int i = 0; i < _slots.Length; i++)
         {
             if (_slots[i].IsEmpty)
@@ -28,6 +32,18 @@ public class InventoryManager : Singleton<InventoryManager>
             }
         }
     }
+
+    public void AddItem(ItemData data)
+    {
+        for (int i = 0; i < _slots.Length; i++)
+        {
+            if (_slots[i].IsEmpty)
+            {
+                _slots[i].SetItem(data);
+                break;
+            }
+        }
+    }    
 
     public BaseItem RemoveItem(int index)
     {
@@ -71,7 +87,7 @@ public class InventoryManager : Singleton<InventoryManager>
     public bool HasEmptySlot()
     {
         int cnt = 0;
-        for (int i = 0; i < _slots.Length; i++) 
+        for (int i = 0; i < _slots.Length; i++)
         {
             if (_slots[i].IsEmpty)
                 cnt++;
@@ -96,6 +112,33 @@ public class InventoryManager : Singleton<InventoryManager>
         {
             BaseItem item = _slots[i].GetComponentInChildren<BaseItem>();
             Slots[i].SetBorderColor(item);
+        }
+    }
+
+    [ContextMenu("Save Inventory")]
+    public void SaveInventory()
+    {
+        if (_backpackDatabase == null)
+        {
+            Debug.LogError("Backpack database not found");
+            return;
+        }
+
+        foreach (var slot in _slots)
+        {
+            if (!slot.IsEmpty)
+            {
+                _backpackDatabase.AddItem(slot.Data);
+            }
+        }
+    }
+
+    [ContextMenu("Load Inventory")]
+    public void LoadInventory()
+    {
+        foreach (var item in _backpackDatabase.Items)
+        {
+            // Todo: 아이템을 슬롯에 추가하는 로직
         }
     }
 }
