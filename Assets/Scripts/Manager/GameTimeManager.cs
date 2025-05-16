@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using System;
 using TMPro;
+using System;
 
 public enum DayPhase { Day, Night }
 
@@ -30,6 +29,13 @@ public class SkyboxSettings
     public float daySunSize = 0.04f;
     public float nightSunSize = 0f;
     public float sunriseSunSize = 0.03f;
+
+    public float dayLightIntensity = 1f;
+    public float nightLightIntensity = 0.05f;
+    public float sunriseLightIntensity = 0.5f;
+    public Color dayLightColor = Color.white;
+    public Color nightLightColor = new Color(0.2f, 0.2f, 0.35f);
+    public Color sunriseLightColor = new Color(1f, 0.6f, 0.4f);
 }
 
 public class GameTimeManager : MonoBehaviour
@@ -40,16 +46,16 @@ public class GameTimeManager : MonoBehaviour
     [SerializeField] private Material skyboxMaterial;
     [SerializeField] private TextMeshProUGUI gameTimeUIText;
 
-    private const float secondsInGameDay = 86400f;
+    [SerializeField] private Light sunLight;
 
+    private const float secondsInGameDay = 86400f;
     private float currentGameTimeSeconds;
     private int currentDay = 1;
     private DayPhase currentPhase = DayPhase.Day;
+    private int currentDifficulty;
 
     public event Action<int, DayPhase, int> OnPhaseChanged;
     public event Action OnGameOver;
-
-    private int currentDifficulty;
 
     void Start()
     {
@@ -63,7 +69,7 @@ public class GameTimeManager : MonoBehaviour
         float gameSecondsPerRealSecond = secondsInGameDay / realSecondsPerGameDay;
         currentGameTimeSeconds += gameSecondsPerRealSecond * 10;
 
-        RotateSkybox();
+        RotateSkyboxAndLighting();
         CheckPhaseChange();
         UpdateGameTimeUI();
 
@@ -80,61 +86,74 @@ public class GameTimeManager : MonoBehaviour
         }
     }
 
-    private void UpdateGameTimeUI()
-    {
-        if (gameTimeUIText != null)
-            gameTimeUIText.text = $"Day {currentDay} - {GetFormattedTime()}";
-    }
-
-    private void RotateSkybox()
+    private void RotateSkyboxAndLighting()
     {
         float rotation = (currentGameTimeSeconds / secondsInGameDay) * 360f;
         skyboxMaterial.SetFloat("_Rotation", rotation);
 
         float hour = currentGameTimeSeconds / 3600f;
+
         Color tint;
         float exposure;
         float atmosphere;
         float sunSize;
 
-        if (hour < 5f) 
+        float lightIntensity;
+        Color lightColor;
+
+        if (hour < 5f)
         {
             tint = skyboxSettings.nightSkyTint;
             exposure = skyboxSettings.nightExposure;
             atmosphere = skyboxSettings.nightAtmosphereThickness;
             sunSize = skyboxSettings.nightSunSize;
+
+            lightIntensity = skyboxSettings.nightLightIntensity;
+            lightColor = skyboxSettings.nightLightColor;
         }
-        else if (hour < 7f) 
+        else if (hour < 7f)
         {
             float t = (hour - 5f) / 2f;
             tint = Color.Lerp(skyboxSettings.nightSkyTint, skyboxSettings.sunriseSkyTint, t);
             exposure = Mathf.Lerp(skyboxSettings.nightExposure, skyboxSettings.sunriseExposure, t);
             atmosphere = Mathf.Lerp(skyboxSettings.nightAtmosphereThickness, skyboxSettings.sunriseAtmosphereThickness, t);
             sunSize = Mathf.Lerp(skyboxSettings.nightSunSize, skyboxSettings.sunriseSunSize, t);
+
+            lightIntensity = Mathf.Lerp(skyboxSettings.nightLightIntensity, skyboxSettings.sunriseLightIntensity, t);
+            lightColor = Color.Lerp(skyboxSettings.nightLightColor, skyboxSettings.sunriseLightColor, t);
         }
-        else if (hour < 17f) 
+        else if (hour < 17f)
         {
             float t = (hour - 7f) / 10f;
             tint = Color.Lerp(skyboxSettings.sunriseSkyTint, skyboxSettings.daySkyTint, t);
             exposure = Mathf.Lerp(skyboxSettings.sunriseExposure, skyboxSettings.dayExposure, t);
             atmosphere = Mathf.Lerp(skyboxSettings.sunriseAtmosphereThickness, skyboxSettings.dayAtmosphereThickness, t);
             sunSize = Mathf.Lerp(skyboxSettings.sunriseSunSize, skyboxSettings.daySunSize, t);
+
+            lightIntensity = Mathf.Lerp(skyboxSettings.sunriseLightIntensity, skyboxSettings.dayLightIntensity, t);
+            lightColor = Color.Lerp(skyboxSettings.sunriseLightColor, skyboxSettings.dayLightColor, t);
         }
-        else if (hour < 19f) 
+        else if (hour < 19f)
         {
             float t = (hour - 17f) / 2f;
             tint = Color.Lerp(skyboxSettings.daySkyTint, skyboxSettings.sunriseSkyTint, t);
             exposure = Mathf.Lerp(skyboxSettings.dayExposure, skyboxSettings.sunriseExposure, t);
             atmosphere = Mathf.Lerp(skyboxSettings.dayAtmosphereThickness, skyboxSettings.sunriseAtmosphereThickness, t);
             sunSize = Mathf.Lerp(skyboxSettings.daySunSize, skyboxSettings.sunriseSunSize, t);
+
+            lightIntensity = Mathf.Lerp(skyboxSettings.dayLightIntensity, skyboxSettings.sunriseLightIntensity, t);
+            lightColor = Color.Lerp(skyboxSettings.dayLightColor, skyboxSettings.sunriseLightColor, t);
         }
-        else if (hour < 24f) 
+        else if (hour < 24f)
         {
             float t = (hour - 19f) / 5f;
             tint = Color.Lerp(skyboxSettings.sunriseSkyTint, skyboxSettings.nightSkyTint, t);
             exposure = Mathf.Lerp(skyboxSettings.sunriseExposure, skyboxSettings.nightExposure, t);
             atmosphere = Mathf.Lerp(skyboxSettings.sunriseAtmosphereThickness, skyboxSettings.nightAtmosphereThickness, t);
             sunSize = Mathf.Lerp(skyboxSettings.sunriseSunSize, skyboxSettings.nightSunSize, t);
+
+            lightIntensity = Mathf.Lerp(skyboxSettings.sunriseLightIntensity, skyboxSettings.nightLightIntensity, t);
+            lightColor = Color.Lerp(skyboxSettings.sunriseLightColor, skyboxSettings.nightLightColor, t);
         }
         else
         {
@@ -142,18 +161,32 @@ public class GameTimeManager : MonoBehaviour
             exposure = skyboxSettings.nightExposure;
             atmosphere = skyboxSettings.nightAtmosphereThickness;
             sunSize = skyboxSettings.nightSunSize;
+
+            lightIntensity = skyboxSettings.nightLightIntensity;
+            lightColor = skyboxSettings.nightLightColor;
         }
 
         skyboxMaterial.SetColor("_SkyTint", tint);
         skyboxMaterial.SetFloat("_Exposure", exposure);
         skyboxMaterial.SetFloat("_AtmosphereThickness", atmosphere);
         skyboxMaterial.SetFloat("_SunSize", sunSize);
+
+        if (sunLight != null)
+        {
+            sunLight.intensity = lightIntensity;
+            sunLight.color = lightColor;
+        }
+    }
+
+    private void UpdateGameTimeUI()
+    {
+        if (gameTimeUIText != null)
+            gameTimeUIText.text = $"Day {currentDay} - {GetFormattedTime()}";
     }
 
     private void CheckPhaseChange()
     {
         DayPhase newPhase = (currentGameTimeSeconds >= 21600f && currentGameTimeSeconds < 64800f) ? DayPhase.Day : DayPhase.Night;
-
         if (newPhase != currentPhase)
         {
             currentPhase = newPhase;

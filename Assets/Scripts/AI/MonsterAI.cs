@@ -13,7 +13,12 @@ public class MonsterAI : MonoBehaviour
     [SerializeField] private float patrolRadius = 5f;
     [SerializeField] private float waitTimeAtPatrolPoint = 3f;
 
-    private enum State { Patrol, Wait, Return, Chase, Attack }
+    [Header("도망 설정")]
+    [SerializeField] private bool isHerbivore = false;      
+    [SerializeField] private float fleeDistance = 10f;      
+    private Vector3 fleeTarget;                            
+
+    private enum State { Patrol, Wait, Return, Chase, Attack, Flee }
     private State currentState = State.Patrol;
 
     private Animator animator;
@@ -65,6 +70,9 @@ public class MonsterAI : MonoBehaviour
                 break;
             case State.Attack:
                 Attack();
+                break;
+            case State.Flee:      
+                Flee();
                 break;
         }
     }
@@ -183,6 +191,29 @@ public class MonsterAI : MonoBehaviour
         Debug.Log("EndAttack called");
     }
 
+    private void Flee()
+    {
+        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+        {
+            GoToRandomPatrolPoint();
+            currentState = State.Patrol;
+        }
+    }
+
+    private void FleeFromPlayer()
+    {
+        Vector2 randDir2D = Random.insideUnitCircle.normalized * fleeDistance;
+        Vector3 candidate = transform.position + new Vector3(randDir2D.x, 0, randDir2D.y);
+
+        if (NavMesh.SamplePosition(candidate, out NavMeshHit hit, 1f, NavMesh.AllAreas))
+            fleeTarget = hit.position;
+        else
+            fleeTarget = homePosition;
+
+        agent.SetDestination(fleeTarget);
+        currentState = State.Flee;
+    }
+
     private void TryDetectPlayer()
     {
         if (CanSeePlayer() && (isAggressive || isProvoked))
@@ -234,6 +265,10 @@ public class MonsterAI : MonoBehaviour
 
     public void OnDamagedByPlayer()
     {
+        if (isHerbivore)    
+        {
+            FleeFromPlayer();
+        }
         if (!isAggressive)
         {
             isProvoked = true;
