@@ -522,13 +522,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccb24163e42ba8b4eb19bdef200d04fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isAggressive: 1
+  isAggressive: 0
   sightAngle: 90
   sightDistance: 10
-  attackRange: 2
-  attackCooldown: 1.5
   patrolRadius: 5
   waitTimeAtPatrolPoint: 3
+  isHerbivore: 1
+  fleeDistance: 10
 --- !u!195 &1267834997
 NavMeshAgent:
   m_ObjectHideFlags: 0
