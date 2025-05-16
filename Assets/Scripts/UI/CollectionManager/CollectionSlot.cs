@@ -7,10 +7,16 @@ public class CollectionSlot : MonoBehaviour
 {
     public TextMeshProUGUI CollectionNameText;
     public TextMeshProUGUI RewardText;
+    public MaterialSlot[] Slots;
 
-    public void SetValid(Collection data)
+    public void Awake()
     {
-        CollectionNameText.text = data.CollectionName;
-        RewardText.text = data.RewardText;
+        Slots = GetComponentsInChildren<MaterialSlot>();
+    }
+
+    public void SetValid(CatalogCollection data)
+    {
+        CollectionNameText.text = data.collectionName;
+        RewardText.text = data.collectionDescription;
     }
 }

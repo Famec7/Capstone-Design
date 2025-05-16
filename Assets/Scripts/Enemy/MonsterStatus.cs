@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class MonsterStatus : MonoBehaviour
+public class MonsterStatus : MonoBehaviour, IDamageable
 {
     [SerializeField] private List<Stat> statList;
     private Dictionary<StatType, Stat> statDict;
@@ -28,5 +28,20 @@ public class MonsterStatus : MonoBehaviour
     {
         if (statDict.TryGetValue(type, out var stat))
             stat.IncreaseMax(amount);
+    }
+
+    public void TakeDamage(int amount)
+    {
+        ModifyStat(StatType.Health, -amount);
+
+        var healthStat = GetStat(StatType.Health);
+        if (healthStat != null && healthStat.currentValue <= 0f)
+            Die();
+    }
+
+    private void Die()
+    {
+        Debug.Log($"{gameObject.name} 이(가) 사망했습니다.");
+        Destroy(gameObject);
     }
 }
