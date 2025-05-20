@@ -23,6 +23,8 @@ public class FetchNFTData : MonoBehaviour
 
     private WaitForSeconds _refreshIntervalWait;
     private Coroutine _refreshCoroutine;
+    
+    public Action<List<NFTItem>> OnNFTDataLoaded;
 
     private void Start()
     {
@@ -44,10 +46,10 @@ public class FetchNFTData : MonoBehaviour
             return;
         }
 
-        _refreshCoroutine = StartCoroutine(IE_SaveNFTData());
+        _refreshCoroutine = StartCoroutine(IE_LoadNFTData());
     }
 
-    private IEnumerator IE_SaveNFTData()
+    private IEnumerator IE_LoadNFTData()
     {
         UnityWebRequest request = UnityWebRequest.Get(allItemsApiUrl);
         yield return request.SendWebRequest();
@@ -66,29 +68,8 @@ public class FetchNFTData : MonoBehaviour
             _refreshCoroutine = null;
             yield break;
         }
-        
-        TradeItemDataList trades = new TradeItemDataList();
-        foreach (var nft in nftItemList.items)
-        {
-            var itemData = ItemDataManager.Instance.GetItemDataById(nft.item_id);
-            TradeItemData tradeItemData = new TradeItemData
-            {
-                TokenId = nft.token_id,
-                Data = itemData,
-                ItemPrice = float.Parse(nft.price_klay),
-                SellerWalletAddress = nft.seller,
-                LeftSeconds = nft.remaining_time,
-            };
-            
-            trades.items.Add(tradeItemData);
-        }
-        
-        string path = System.IO.Path.Combine(Application.dataPath, fileName);
-        string tradeJson = JsonUtility.ToJson(trades);
-        System.IO.File.WriteAllText(path, tradeJson);
-        
-        TradeManager.Instance.UpdateUI();
-        
+
+        OnNFTDataLoaded?.Invoke(nftItemList.items);
         _refreshCoroutine = null;
     }
 
@@ -124,7 +105,7 @@ public class FetchNFTData : MonoBehaviour
     {
         while (true)
         {
-            _refreshCoroutine = StartCoroutine(IE_SaveNFTData());
+            _refreshCoroutine = StartCoroutine(IE_LoadNFTData());
 
             yield return _refreshCoroutine;
             yield return _refreshIntervalWait;
