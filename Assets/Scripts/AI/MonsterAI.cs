@@ -4,6 +4,9 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class MonsterAI : MonoBehaviour
 {
+    [Header("공격 소리")]
+    [SerializeField] private AudioClip effectClip;
+
     [Header("행동 설정")]
     [SerializeField] private bool isAggressive = true;
     [SerializeField] private float sightAngle = 90f;
@@ -20,6 +23,7 @@ public class MonsterAI : MonoBehaviour
 
     private enum State { Patrol, Wait, Return, Chase, Attack, Flee }
     private State currentState = State.Patrol;
+    private AudioSource audioSource;
 
     private Animator animator;
     private NavMeshAgent agent;
@@ -35,6 +39,7 @@ public class MonsterAI : MonoBehaviour
 
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -180,6 +185,8 @@ public class MonsterAI : MonoBehaviour
             agent.SetDestination(transform.position);
             animator.SetTrigger("Attack");
             Debug.Log($"{name} 공격 애니메이션 시작");
+            audioSource.clip = effectClip;
+            audioSource.Play();
         }
         else
         {
