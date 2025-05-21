@@ -4,6 +4,9 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class MonsterAI : MonoBehaviour
 {
+    [Header("공격 소리")]
+    [SerializeField] private AudioClip effectClip;
+
     [Header("행동 설정")]
     [SerializeField] private bool isAggressive = true;
     [SerializeField] private float sightAngle = 90f;
@@ -20,6 +23,7 @@ public class MonsterAI : MonoBehaviour
 
     private enum State { Patrol, Wait, Return, Chase, Attack, Flee }
     private State currentState = State.Patrol;
+    private AudioSource audioSource;
 
     private Animator animator;
     private NavMeshAgent agent;
@@ -35,6 +39,7 @@ public class MonsterAI : MonoBehaviour
 
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -43,7 +48,7 @@ public class MonsterAI : MonoBehaviour
 
         var moveStat = monsterStatus.GetStat(StatType.MovementSpeed);
         if (moveStat != null)
-            agent.speed = moveStat.currentValue;
+            agent.speed = GetMovementSpeed(useMax: false);
 
         GoToRandomPatrolPoint();
     }
@@ -77,8 +82,18 @@ public class MonsterAI : MonoBehaviour
         }
     }
 
+    private float GetMovementSpeed(bool useMax)
+    {
+        var stat = monsterStatus.GetStat(StatType.MovementSpeed);
+        if (stat == null)
+            return agent.speed;                   
+        return useMax ? stat.maxValue : stat.currentValue; 
+    }
+
     private void Patrol()
     {
+        agent.speed = GetMovementSpeed(useMax: false);
+
         if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
         {
             currentState = State.Wait;
@@ -98,6 +113,8 @@ public class MonsterAI : MonoBehaviour
 
     private void ReturnToHome()
     {
+        agent.speed = GetMovementSpeed(useMax: false);
+
         if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
         {
             GoToRandomPatrolPoint();
@@ -107,6 +124,8 @@ public class MonsterAI : MonoBehaviour
 
     private void GoToRandomPatrolPoint()
     {
+        agent.speed = GetMovementSpeed(useMax: false);
+
         Vector2 randCircle = Random.insideUnitCircle * patrolRadius;
         Vector3 randPoint = homePosition + new Vector3(randCircle.x, 0, randCircle.y);
 
@@ -124,6 +143,9 @@ public class MonsterAI : MonoBehaviour
 
     private void Chase()
     {
+        if (isHerbivore) return;
+        agent.speed = GetMovementSpeed(useMax: true);
+
         float range = monsterStatus.GetStat(StatType.AttackRange)?.currentValue ?? 0f;
 
         if (!CanSeePlayer() && !isAggressive && !isProvoked)
@@ -163,6 +185,8 @@ public class MonsterAI : MonoBehaviour
             agent.SetDestination(transform.position);
             animator.SetTrigger("Attack");
             Debug.Log($"{name} 공격 애니메이션 시작");
+            audioSource.clip = effectClip;
+            audioSource.Play();
         }
         else
         {
@@ -202,13 +226,26 @@ public class MonsterAI : MonoBehaviour
 
     private void FleeFromPlayer()
     {
-        Vector2 randDir2D = Random.insideUnitCircle.normalized * fleeDistance;
-        Vector3 candidate = transform.position + new Vector3(randDir2D.x, 0, randDir2D.y);
+        agent.speed = GetMovementSpeed(useMax: true);
+
+        Vector3 awayDir = (transform.position - player.position).normalized;
+        Vector3 candidate = transform.position + awayDir * fleeDistance;
 
         if (NavMesh.SamplePosition(candidate, out NavMeshHit hit, 1f, NavMesh.AllAreas))
             fleeTarget = hit.position;
         else
             fleeTarget = homePosition;
+
+
+        //// ▶ (추가) 도망 지점에 디버그 구체 생성 (1초 뒤 자동 삭제)
+        //GameObject debugSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        //debugSphere.transform.position = fleeTarget;                      // 구체 위치
+        //debugSphere.transform.localScale = Vector3.one * 0.5f;            // 크기 조절
+        //Destroy(debugSphere.GetComponent<Collider>());                    // 충돌체 제거
+        //Destroy(debugSphere, 1f);
+
+        Debug.DrawLine(transform.position, fleeTarget, Color.cyan, 1f);
+        Debug.Log($"FleeFromPlayer: from {transform.position} to {fleeTarget}");
 
         agent.SetDestination(fleeTarget);
         currentState = State.Flee;
@@ -239,7 +276,7 @@ public class MonsterAI : MonoBehaviour
                 Color rayColor = isPlayer ? Color.green : Color.red;
 
                 Debug.DrawRay(origin, flatDir.normalized * sightDistance, rayColor, 0.1f);
-                Debug.Log($"{name} Raycast hit: {hit.collider.name} (Tag: {hit.collider.tag})");
+                //Debug.Log($"{name} Raycast hit: {hit.collider.name} (Tag: {hit.collider.tag})");
 
                 if (isPlayer)
                     return true;
