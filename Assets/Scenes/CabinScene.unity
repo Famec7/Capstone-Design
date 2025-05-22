@@ -1500,6 +1500,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8117819068878410186, guid: 380716598322e7345a08ecce16d76203, type: 3}
+      propertyPath: userApiUrl
+      value: http://13.125.167.56:8000/api/nft/getUserItem/
+      objectReference: {fileID: 0}
     - target: {fileID: 8356960259007769155, guid: 380716598322e7345a08ecce16d76203, type: 3}
       propertyPath: m_Name
       value: NFTServer

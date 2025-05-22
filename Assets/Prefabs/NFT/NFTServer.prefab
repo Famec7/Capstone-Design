@@ -46,5 +46,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allItemsApiUrl: http://13.125.167.56:8000/api/nft/getAllItems/
   userApiUrl: http://13.125.167.56:8000/api/nft/getUserItems/
-  fileName: NFTData.json
+  userMarketApiUrl: http://13.125.167.56:8000/api/nft/getListedUserItem/
   refreshInterval: 60
+  walletAddress: {fileID: 11400000, guid: 0ed30885b5f804848844376b8b7cdec0, type: 2}
