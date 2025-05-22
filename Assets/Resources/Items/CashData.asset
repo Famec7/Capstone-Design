@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37dae52f3f7fd724e8fa5a9783f95305, type: 3}
+  m_Name: CashData
+  m_EditorClassIdentifier: 
+  ItemId: 1001
+  ItemName: "\uC9C0\uD3D0 \uBB49\uCE58"
+  ItemDescription: 
+  ItemType: 0
+  ItemValue: 50
+  ItemIcon: {fileID: 21300000, guid: 7839bc02c44adc5408e63fb3f50c221a, type: 3}
+  ItemModel: {fileID: 2107728081518688553, guid: aa7d1f96c0431314a878a2d84cd51729, type: 3}
+  AttackPower: 0
+  IsNFT: 1

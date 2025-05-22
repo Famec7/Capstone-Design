@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37dae52f3f7fd724e8fa5a9783f95305, type: 3}
+  m_Name: TomatoData
+  m_EditorClassIdentifier: 
+  ItemId: 3002
+  ItemName: "\uD1A0\uB9C8\uD1A0"
+  ItemDescription: "\uD5C8\uAE30 15 \uD68C\uBCF5"
+  ItemType: 1
+  ItemValue: 3
+  ItemIcon: {fileID: 21300000, guid: 07cba2e1b3a44d6479bb081f7451bbff, type: 3}
+  ItemModel: {fileID: 3452694226032689571, guid: 7d297ce6a487c0247b5edccce4ece3c6, type: 3}
+  AttackPower: 0
+  IsNFT: 1
