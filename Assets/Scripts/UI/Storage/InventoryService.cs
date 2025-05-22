@@ -19,13 +19,13 @@ public class InventoryService
     public int PageSize { get; }
     public int CurrentPage { get; private set; } = 1;
 
-    /**********저장 경로***********/
-    private readonly string _filePath = Path.Combine(Application.persistentDataPath, "Storage.json");
-
     public InventoryService(int pageSize, int backpackCapacity)
     {
         PageSize = pageSize;
         _backpackCapacity = backpackCapacity;
+        
+        Backpack = new Backpack(_backpackCapacity);
+        Storage = new Storage();
     }
 
     public void Save()
@@ -38,8 +38,6 @@ public class InventoryService
 
     public void Load(List<NFTItem> items)
     {
-        Storage = new Storage();
-
         foreach (var item in items)
         {
             var tradeItem = new TradeItemData()
@@ -53,8 +51,7 @@ public class InventoryService
 
             Storage.Add(tradeItem);
         }
-
-        Backpack = new Backpack(_backpackCapacity);
+        
         _backpackDatabase = Resources.Load<InventoryDatabase>("Items/UserBackPack");
 
         if (_backpackDatabase == null)
