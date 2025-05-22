@@ -29,7 +29,7 @@ public class ItemPreview : MonoBehaviour, IPointerDownHandler
         Data = data;
         BorderImage.gameObject.SetActive(false);
         ExpiredText.gameObject.SetActive(false);
-        NameText.text = Data.ItemName;
+        NameText.text = Data.Data.ItemName;
         PriceText.text = Data.ItemPrice.ToString();
 
         TimeSpan time = TimeSpan.FromSeconds(data.LeftSeconds);

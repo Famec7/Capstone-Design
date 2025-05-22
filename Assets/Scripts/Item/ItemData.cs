@@ -21,6 +21,7 @@ public class ItemData : ScriptableObject
     public ItemType ItemType;
     public int ItemValue;
     public Sprite ItemIcon;
+    public string URL;
     public GameObject ItemModel;
     public int AttackPower;
     public bool IsNFT = false;

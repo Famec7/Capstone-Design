@@ -6,10 +6,10 @@ using UnityEngine.Serialization;
 public class InventoryDatabase : ScriptableObject
 {
     [SerializeField]
-    private List<ItemData> items = new List<ItemData>();
-    public IReadOnlyList<ItemData> Items => items;
+    private List<TradeItemData> items = new List<TradeItemData>();
+    public IReadOnlyList<TradeItemData> Items => items;
     
-    public void AddItem(ItemData item)
+    public void AddItem(TradeItemData item)
     {
         if (item == null) return;
         if (items.Contains(item)) return;
@@ -17,7 +17,7 @@ public class InventoryDatabase : ScriptableObject
         items.Add(item);
     }
     
-    public void RemoveItem(ItemData item)
+    public void RemoveItem(TradeItemData item)
     {
         if (item == null) return;
         if (!items.Contains(item)) return;

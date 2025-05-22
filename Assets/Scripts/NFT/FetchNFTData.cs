@@ -12,6 +12,9 @@ public class FetchNFTData : MonoBehaviour
     [Header("특정 유저 정보 조회 API")] [SerializeField]
     private string userApiUrl = "http://13.125.167.56:8000/api/nft/getUserItems/";
 
+    [Header("특정 유저 마켓 정보 조회 API")] [SerializeField]
+    private string userMarketApiUrl = "http://13.125.167.56:8000/api/nft/getListedUserItem/";
+
     [Header("저장할 JSON 파일 이름")] [SerializeField]
     private string fileName = "NFTData.json";
 
@@ -20,6 +23,8 @@ public class FetchNFTData : MonoBehaviour
 
     private WaitForSeconds _refreshIntervalWait;
     private Coroutine _refreshCoroutine;
+    
+    public Action<List<NFTItem>> OnNFTDataLoaded;
 
     private void Start()
     {
@@ -41,10 +46,10 @@ public class FetchNFTData : MonoBehaviour
             return;
         }
 
-        _refreshCoroutine = StartCoroutine(IE_SaveNFTData());
+        _refreshCoroutine = StartCoroutine(IE_LoadNFTData());
     }
 
-    private IEnumerator IE_SaveNFTData()
+    private IEnumerator IE_LoadNFTData()
     {
         UnityWebRequest request = UnityWebRequest.Get(allItemsApiUrl);
         yield return request.SendWebRequest();
@@ -63,38 +68,44 @@ public class FetchNFTData : MonoBehaviour
             _refreshCoroutine = null;
             yield break;
         }
+
+        OnNFTDataLoaded?.Invoke(nftItemList.items);
+        _refreshCoroutine = null;
+    }
+
+    /// <summary>
+    /// 특정 유저의 NFT 데이터 조회
+    /// </summary>
+    /// <param name="callback"> 데이터 로딩 완료시 호출하는 Action </param>
+    public void FetchUserNFTData(Action<List<NFTItem>> callback)
+    {
+        StartCoroutine(IE_FetchUserItem(callback));
+    }
+
+    private IEnumerator IE_FetchUserItem(Action<List<NFTItem>> callback)
+    {
+        UnityWebRequest request = UnityWebRequest.Get(userApiUrl);
+        yield return request.SendWebRequest();
         
-        TradeItemDataList trades = new TradeItemDataList();
-        foreach (var nft in nftItemList.items)
+        if (request.result != UnityWebRequest.Result.Success)
         {
-            ItemData itemData = ItemDataManager.Instance.GetItemDataById(nft.item_id);
-            
-            TradeItemData tradeItemData = new TradeItemData
-            {
-                ItemName = itemData.ItemName,
-                ItemType = itemData.ItemType,
-                ItemPrice = float.Parse(nft.price_klay),
-                SellerWalletAddress = nft.seller,
-                LeftSeconds = nft.remaining_time,
-            };
-            
-            trades.items.Add(tradeItemData);
+            Debug.Log(request.error + "Error fetching User NFTData");
+            yield break;
         }
         
-        string path = System.IO.Path.Combine(Application.dataPath, fileName);
-        string tradeJson = JsonUtility.ToJson(trades);
-        System.IO.File.WriteAllText(path, tradeJson);
-        
-        TradeManager.Instance.UpdateUI();
-        
-        _refreshCoroutine = null;
+        NFTItemList nftItemList = JsonUtility.FromJson<NFTItemList>(request.downloadHandler.text);
+        if (nftItemList == null && nftItemList.items.Count == 0)
+        {
+            yield break;
+        }
+        callback?.Invoke(nftItemList.items);
     }
 
     private IEnumerator IE_AutoRenewNFTData()
     {
         while (true)
         {
-            _refreshCoroutine = StartCoroutine(IE_SaveNFTData());
+            _refreshCoroutine = StartCoroutine(IE_LoadNFTData());
 
             yield return _refreshCoroutine;
             yield return _refreshIntervalWait;
@@ -105,6 +116,7 @@ public class FetchNFTData : MonoBehaviour
 [Serializable]
 public class NFTItemList
 {
+    public bool success;
     public List<NFTItem> items;
 }
 

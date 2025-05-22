@@ -12,6 +12,8 @@ public class InventoryService
     public Backpack Backpack { get; private set; }
 
     private InventoryDatabase _backpackDatabase;
+    
+    private int _backpackCapacity;
 
     /**********페이징 상태***********/
     public int PageSize { get; }
@@ -19,49 +21,40 @@ public class InventoryService
 
     /**********저장 경로***********/
     private readonly string _filePath = Path.Combine(Application.persistentDataPath, "Storage.json");
-    
+
     public InventoryService(int pageSize, int backpackCapacity)
     {
         PageSize = pageSize;
-        Load(backpackCapacity);
+        _backpackCapacity = backpackCapacity;
     }
 
     public void Save()
     {
-        var itemSaveList = new List<int>();
-        foreach (var item in Storage.Items)
-        {
-            itemSaveList.Add(item.ItemId);
-        }
-        
-        var json = JsonUtility.ToJson(itemSaveList, true);
-        File.WriteAllText(_filePath, json);
-
         foreach (var item in Backpack.Items)
         {
             _backpackDatabase.AddItem(item);
         }
     }
 
-    public void Load(int capacity)
+    public void Load(List<NFTItem> items)
     {
         Storage = new Storage();
 
-        if (File.Exists(_filePath))
+        foreach (var item in items)
         {
-            var itemSaveList = new List<int>();
-            
-            var json = File.ReadAllText(_filePath);
-            var items = JsonUtility.FromJson<List<int>>(json);
-
-            foreach (var item in items)
+            var tradeItem = new TradeItemData()
             {
-                var itemData = ItemDataManager.Instance.GetItemDataById(item);
-                Storage.Add(itemData);
-            }
+                TokenId = item.token_id,
+                Data = ItemDataManager.Instance.GetItemDataById(item.item_id),
+                ItemPrice = float.Parse(item.price_klay),
+                SellerWalletAddress = item.seller,
+                LeftSeconds = item.remaining_time,
+            };
+
+            Storage.Add(tradeItem);
         }
 
-        Backpack = new Backpack(capacity);
+        Backpack = new Backpack(_backpackCapacity);
         _backpackDatabase = Resources.Load<InventoryDatabase>("Items/UserBackPack");
 
         if (_backpackDatabase == null)
@@ -80,31 +73,31 @@ public class InventoryService
         _backpackDatabase.RemoveAllItems();
     }
 
-    public IEnumerable<ItemData> GetFilteredSorted(ItemType filter, SortType sortType, bool ascending)
+    public IEnumerable<TradeItemData> GetFilteredSorted(ItemType filter, SortType sortType, bool ascending)
     {
         if (Storage.Items == null)
         {
-            return Enumerable.Empty<ItemData>();
+            return Enumerable.Empty<TradeItemData>();
         }
-        
+
         var query = Storage.Items.AsEnumerable();
 
         if (filter != ItemType.None)
         {
-            query = query.Where(item => item.ItemType == filter);
+            query = query.Where(item => item.Data.ItemType == filter);
         }
 
         switch (sortType)
         {
             case SortType.Name:
                 query = ascending
-                    ? query.OrderBy(item => item.ItemName)
-                    : query.OrderByDescending(item => item.ItemName);
+                    ? query.OrderBy(item => item.Data.ItemName)
+                    : query.OrderByDescending(item => item.Data.ItemName);
                 break;
             case SortType.Value:
                 query = ascending
-                    ? query.OrderBy(item => item.ItemValue)
-                    : query.OrderByDescending(item => item.ItemValue);
+                    ? query.OrderBy(item => item.ItemPrice)
+                    : query.OrderByDescending(item => item.ItemPrice);
                 break;
             default:
                 break;
@@ -124,7 +117,7 @@ public class InventoryService
         }
     }
 
-    public IEnumerable<ItemData> GetCurrentPageItems(ItemType filter, SortType sortType, bool ascending)
+    public IEnumerable<TradeItemData> GetCurrentPageItems(ItemType filter, SortType sortType, bool ascending)
     {
         return GetFilteredSorted(filter, sortType, ascending)
             .Skip((CurrentPage - 1) * PageSize)
@@ -157,7 +150,7 @@ public class InventoryService
         }
     }
 
-    public void MoveToBackPack(ItemData item)
+    public void MoveToBackPack(TradeItemData item)
     {
         if (Backpack.IsFull)
         {
@@ -168,13 +161,20 @@ public class InventoryService
         Backpack.Add(item);
     }
 
-    public void MoveToStorage(ItemData item)
+    public void MoveToStorage(TradeItemData item)
     {
         Backpack.Remove(item);
         Storage.Add(item);
     }
 
-    public void DeleteItem(ItemData item)
+    public void AddItem(TradeItemData item)
+    {
+        if (item == null) return;
+
+        Storage.Add(item);
+    }
+
+    public void DeleteItem(TradeItemData item)
     {
         Storage.Remove(item);
     }
