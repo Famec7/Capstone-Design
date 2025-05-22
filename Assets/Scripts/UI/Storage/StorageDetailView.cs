@@ -24,8 +24,12 @@ public class StorageDetailView : MonoBehaviour
     [Header("아이템 가치")]
     [SerializeField]
     private TextMeshProUGUI itemValueText;
+    
+    [Header("남은 시간")]
+    [SerializeField]
+    private TextMeshProUGUI remainingTimeText;
 
-    public ItemData CurrentItemData { get; private set; }
+    public TradeItemData CurrentItemData { get; private set; }
 
     private void Awake()
     {
@@ -55,15 +59,29 @@ public class StorageDetailView : MonoBehaviour
         }
     }
 
-    public void Show(ItemData itemData)
+    public void Show(TradeItemData itemData)
     {
         CurrentItemData = itemData;
         
-        itemIcon.sprite = itemData.ItemIcon;
-        itemNameText.text = $"<b>이름</b>                   {itemData.ItemName}";
-        itemTypeText.text = $"<b>분류</b>                   {itemData.ItemType}";
-        itemValueText.text = $"<b>가치</b>                   {itemData.ItemValue}G";
-        itemDescriptionText.text = $"<b>설명</b>\n{itemData.ItemDescription}";
+        itemIcon.sprite = itemData.Data.ItemIcon;
+        itemNameText.text = $"<b>이름</b>                   {itemData.Data.ItemName}";
+        itemTypeText.text = $"<b>분류</b>                   {itemData.Data.ItemType}";
+        itemValueText.text = $"<b>가치</b>                   {itemData.ItemPrice}G";
+        itemDescriptionText.text = $"<b>설명</b>\n{itemData.Data.ItemDescription}";
+
+        if (remainingTimeText != null)
+        {
+            float hour = itemData.LeftSeconds / 3600;
+            float minute = (itemData.LeftSeconds % 3600) / 60;
+
+            if (hour <= 1)
+            {
+                remainingTimeText.color = Color.red;
+            }
+            
+            remainingTimeText.text = $"<b>남은 시간</b>   {hour:00}:{minute:00}";
+        }
+        
         gameObject.SetActive(true);
     }
     

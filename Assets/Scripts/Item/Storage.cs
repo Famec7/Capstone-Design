@@ -6,17 +6,17 @@ using UnityEngine;
 [Serializable]
 public class Storage : IItemContainer
 {
-    private List<ItemData> _items = new List<ItemData>();
-    public IReadOnlyList<ItemData> Items => _items;
+    private List<TradeItemData> _items = new List<TradeItemData>();
+    public IReadOnlyList<TradeItemData> Items => _items;
     
-    public void Add(ItemData item)
+    public void Add(TradeItemData item)
     {
         if (item == null) return;
 
         _items.Add(item);
     }
 
-    public void Remove(ItemData item)
+    public void Remove(TradeItemData item)
     {
         if (item == null) return;
         if (!_items.Contains(item)) return;

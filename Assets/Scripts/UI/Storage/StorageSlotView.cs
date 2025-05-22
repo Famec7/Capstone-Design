@@ -10,8 +10,8 @@ public class StorageSlotView : MonoBehaviour
     
     private Button _slotButton;
     
-    private ItemData _currentItemData;
-    public ItemData GetItemData() => _currentItemData;
+    private TradeItemData _currentItemData;
+    public TradeItemData GetItemData() => _currentItemData;
 
     private void Awake()
     {
@@ -26,7 +26,7 @@ public class StorageSlotView : MonoBehaviour
         }
     }
 
-    public void Bind(ItemData itemData, Action<ItemData> callback)
+    public void Bind(TradeItemData itemData, Action<TradeItemData> callback)
     {
         _currentItemData = itemData;
         
@@ -36,6 +36,6 @@ public class StorageSlotView : MonoBehaviour
             callback?.Invoke(itemData);
         });
         
-        itemImage.sprite = itemData.ItemIcon;
+        itemImage.sprite = itemData.Data.ItemIcon;
     }
 }

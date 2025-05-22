@@ -10,8 +10,8 @@ using static UnityEngine.XR.Interaction.Toolkit.XRInteractionUpdateOrder;
 [Serializable]
 public class TradeItemData
 {
-    public string ItemName;
-    public ItemType ItemType;
+    public int TokenId;
+    public ItemData Data;
     public float ItemPrice;
     public string SellerWalletAddress;
     public int LeftSeconds;
@@ -39,9 +39,9 @@ public class TradeManager : Singleton<TradeManager>
     private List<TradeItemData> _currentDisplayItems;
     private ItemType? _currentFilter = null; // null means ALL is selected
     
-    [Header("JSON File Path")]
+    [Header("중계 서버")]
     [SerializeField]
-    private string fileName;
+    private FetchNFTData fetchNFTData;
 
     /// <summary>
     /// Initialize TradeManager data, assign button listeners, and display all items.
@@ -54,22 +54,32 @@ public class TradeManager : Singleton<TradeManager>
             CategoryButtons[i].onClick.AddListener(() => { FilterByItemType((ItemType)index); });
         }
         CategoryButtons[CategoryButtons.Length - 1].onClick.AddListener(() => { ShowAllItems(); });
+
+        fetchNFTData.OnNFTDataLoaded = (items) =>
+        {
+            TradeItemDataList trades = new TradeItemDataList();
+            foreach (var item in items)
+            {
+                var itemData = ItemDataManager.Instance.GetItemDataById(item.item_id);
+                TradeItemData tradeItemData = new TradeItemData
+                {
+                    TokenId = item.token_id,
+                    Data = itemData,
+                    ItemPrice = float.Parse(item.price_klay),
+                    SellerWalletAddress = item.seller,
+                    LeftSeconds = item.remaining_time,
+                };
+
+                trades.items.Add(tradeItemData);
+            }
+
+            Datas = trades.items;
+            UpdateUI();
+        };
     }
 
     public void UpdateUI()
     {
-        string path = Path.Combine(Application.dataPath, fileName);
-
-        if (!File.Exists(path))
-        {
-            Debug.LogError("JSON 파일을 찾을 수 없습니다: " + path);
-            return;
-        }
-        
-        string jsonText = File.ReadAllText(path);
-        TradeItemDataList tradeItems = JsonUtility.FromJson<TradeItemDataList>(jsonText);
-        
-        Datas = tradeItems.items;
         ShowAllItems();
         UpdateLatestValidPreviews();
     }
@@ -199,7 +209,7 @@ public class TradeManager : Singleton<TradeManager>
     /// </summary>
     public void FilterByItemType(ItemType filterType)
     {
-        List<TradeItemData> filteredItems = Datas.Where(item => item.ItemType == filterType).ToList();
+        List<TradeItemData> filteredItems = Datas.Where(item => item.Data.ItemType == filterType).ToList();
         _currentDisplayItems = filteredItems;
         _currentFilter = filterType;
         int totalPages = filteredItems.Count / PreviewCounts + (filteredItems.Count % PreviewCounts != 0 ? 1 : 0);

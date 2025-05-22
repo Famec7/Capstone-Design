@@ -23,10 +23,10 @@ public class DetailedDescriptionSection : MonoBehaviour
         CategoryText.gameObject.SetActive(true);
         BuyButton.gameObject.SetActive(true);
 
-        NameText.text = Data.ItemName;
+        NameText.text = Data.Data.ItemName;
         // 임시
         DescriptionText.text = "Detailed Description";
-        CategoryText.text = Data.ItemType.ToString();
+        CategoryText.text = Data.Data.ItemType.ToString();
     }
 
     public void SetDetailedDescriptionSection(ItemData Data)
