@@ -146,8 +146,8 @@ GameObject:
   - component: {fileID: 1108126579206721819}
   - component: {fileID: 6931442485359948300}
   - component: {fileID: 6439401494654212723}
-  - component: {fileID: 6183542678753340841}
   - component: {fileID: 5165043536724593023}
+  - component: {fileID: 2275797144463483953}
   m_Layer: 5
   m_Name: KlipLoginUI
   m_TagString: Untagged
@@ -240,22 +240,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &6183542678753340841
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3636111824305941109}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b95901192b3dc7c4d94aa6d6098a14bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  qrCodeImage: {fileID: 6943355808979276287}
-  statusText: {fileID: 5739943892085250389}
-  loginPanel: {fileID: 7051455778798177687}
-  walletAddress: {fileID: 11400000, guid: 0ed30885b5f804848844376b8b7cdec0, type: 2}
 --- !u!114 &5165043536724593023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -275,6 +259,22 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RaycastTriggerInteraction: 1
+--- !u!114 &2275797144463483953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3636111824305941109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b95901192b3dc7c4d94aa6d6098a14bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  qrCodeImage: {fileID: 6943355808979276287}
+  statusText: {fileID: 5739943892085250389}
+  loginPanel: {fileID: 7051455778798177687}
+  walletAddress: {fileID: 11400000, guid: 0ed30885b5f804848844376b8b7cdec0, type: 2}
 --- !u!1 &3834755598730151818
 GameObject:
   m_ObjectHideFlags: 0
@@ -506,7 +506,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6183542678753340841}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: KlipLoginUI, Assembly-CSharp
         m_MethodName: OnClickLoginButton
         m_Mode: 1
