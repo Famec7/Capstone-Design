@@ -15,9 +15,6 @@ public class FetchNFTData : MonoBehaviour
     [Header("특정 유저 마켓 정보 조회 API")] [SerializeField]
     private string userMarketApiUrl = "http://13.125.167.56:8000/api/nft/getListedUserItem/";
 
-    [Header("저장할 JSON 파일 이름")] [SerializeField]
-    private string fileName = "NFTData.json";
-
     [Header("갱신 주기(초 단위)")] [SerializeField]
     private float refreshInterval = 60.0f;
 
