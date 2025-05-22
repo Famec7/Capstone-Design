@@ -64,7 +64,7 @@ public class CollectionManager : Singleton<CollectionManager>
                 slot.SetValid(_currentDisplayCollections[dataIndex]);
 
                 // 상세 설명 버튼 바인딩
-                int idx = i; // 클로저 보호
+                int idx = 0; // 클로저 보호
                 foreach (var matSlot in slot.Slots)
                 {
                     var required = _currentDisplayCollections[dataIndex].requiredItems[idx];
