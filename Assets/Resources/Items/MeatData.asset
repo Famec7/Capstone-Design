@@ -19,5 +19,5 @@ MonoBehaviour:
   ItemValue: 10
   ItemIcon: {fileID: 21300000, guid: c2a77d1347c0e244a84fb363f5c89ee9, type: 3}
   ItemModel: {fileID: 2629127272418962556, guid: 8dc465f46b6c8b242be3b0a23bd18bf1, type: 3}
-  AttackPower: 0
+  AttackPower: 25
   IsNFT: 1

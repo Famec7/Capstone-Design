@@ -14,7 +14,7 @@ public class StatusManager : MonoBehaviour
     [SerializeField] private StatEffectSettings effectSettings;
 
     private void Awake()
-    {
+    {   
         Instance = this;
     }
 
