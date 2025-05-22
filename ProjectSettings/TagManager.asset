@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Monster
   - BackpackZone
+  - Mouth
   layers:
   - Default
   - TransparentFX

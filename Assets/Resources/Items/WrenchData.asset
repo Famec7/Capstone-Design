@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37dae52f3f7fd724e8fa5a9783f95305, type: 3}
+  m_Name: WrenchData
+  m_EditorClassIdentifier: 
+  ItemId: 1008
+  ItemName: "\uB80C\uCE58"
+  ItemDescription: 
+  ItemType: 0
+  ItemValue: 40
+  ItemIcon: {fileID: 21300000, guid: 67788177fef4c7345ba666513086da83, type: 3}
+  ItemModel: {fileID: 8010904881565926004, guid: 38c8e93fabc5887448f6592869f6799c, type: 3}
+  AttackPower: 0
+  IsNFT: 1

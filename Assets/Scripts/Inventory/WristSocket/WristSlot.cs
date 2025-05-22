@@ -58,6 +58,8 @@ public class WristSlot : MonoBehaviour
     private void AttachToHand(BaseItem item)
     {
         // 기존 Detach 로직
+        if (item == null) return;
+
         var grab = item.GetComponent<CustomGrabInteractable>();
         if (grab == null) return;
 

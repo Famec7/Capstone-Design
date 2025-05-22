@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37dae52f3f7fd724e8fa5a9783f95305, type: 3}
+  m_Name: CokeData
+  m_EditorClassIdentifier: 
+  ItemId: 3004
+  ItemName: "\uCF5C\uB77C"
+  ItemDescription: "\uAC08\uC99D 25 \uD68C\uBCF5"
+  ItemType: 1
+  ItemValue: 10
+  ItemIcon: {fileID: 21300000, guid: f4b11e2a77b8016479419c2ae53e7498, type: 3}
+  ItemModel: {fileID: 533784423316795687, guid: e72a7b599e40e6442be4ecac77d5b794, type: 3}
+  AttackPower: 25
+  IsNFT: 1
