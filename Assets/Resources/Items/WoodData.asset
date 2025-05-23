@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemId: 3
   ItemName: "\uB098\uBB34"
-  ItemDescription: "\uC124\uBA85"
+  ItemDescription: 
   ItemType: 1
   ItemValue: 0
   ItemIcon: {fileID: 21300000, guid: 4524f97fb540c0a4fa79c2f79888e5f0, type: 3}
+  URL: 
   ItemModel: {fileID: 0}
   AttackPower: 1
-  IsNFT: 1
+  IsNFT: 0
