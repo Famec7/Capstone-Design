@@ -150,7 +150,7 @@ MonoBehaviour:
     currentValue: 3
     maxValue: 3
   - type: 7
-    currentValue: 8
+    currentValue: 2
     maxValue: 8
 --- !u!82 &1112920675550880872
 AudioSource:

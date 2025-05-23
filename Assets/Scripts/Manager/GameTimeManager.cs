@@ -44,7 +44,6 @@ public class GameTimeManager : MonoBehaviour
     [SerializeField] private DifficultySettings difficultySettings;
     [SerializeField] private SkyboxSettings skyboxSettings;
     [SerializeField] private Material skyboxMaterial;
-    [SerializeField] private TextMeshProUGUI gameTimeUIText;
 
     [SerializeField] private Light sunLight;
 
@@ -71,7 +70,6 @@ public class GameTimeManager : MonoBehaviour
 
         RotateSkyboxAndLighting();
         CheckPhaseChange();
-        UpdateGameTimeUI();
 
         if (currentDay == 3 && currentGameTimeSeconds >= 64800f)
         {
@@ -176,12 +174,6 @@ public class GameTimeManager : MonoBehaviour
             sunLight.intensity = lightIntensity;
             sunLight.color = lightColor;
         }
-    }
-
-    private void UpdateGameTimeUI()
-    {
-        if (gameTimeUIText != null)
-            gameTimeUIText.text = $"Day {currentDay} - {GetFormattedTime()}";
     }
 
     private void CheckPhaseChange()
