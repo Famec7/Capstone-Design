@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -15,11 +16,11 @@ public class FetchNFTData : MonoBehaviour
     [Header("특정 유저 마켓 정보 조회 API")] [SerializeField]
     private string userMarketApiUrl = "http://13.125.167.56:8000/api/nft/getListedUserItem/";
 
-    [Header("저장할 JSON 파일 이름")] [SerializeField]
-    private string fileName = "NFTData.json";
-
     [Header("갱신 주기(초 단위)")] [SerializeField]
     private float refreshInterval = 60.0f;
+    
+    [Header("유저 지갑 주소")][SerializeField]
+    private WalletAddress walletAddress;
 
     private WaitForSeconds _refreshIntervalWait;
     private Coroutine _refreshCoroutine;
@@ -30,6 +31,17 @@ public class FetchNFTData : MonoBehaviour
     {
         _refreshIntervalWait = new WaitForSeconds(refreshInterval);
         StartCoroutine(IE_AutoRenewNFTData());
+    }
+    
+    private UnityWebRequest Post(string url, string jsonData)
+    {
+        var request = new UnityWebRequest(url, "POST");
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
+        request.uploadHandler = (UploadHandler) new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler) new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        return request;
     }
 
     /// <summary>
@@ -51,7 +63,13 @@ public class FetchNFTData : MonoBehaviour
 
     private IEnumerator IE_LoadNFTData()
     {
-        UnityWebRequest request = UnityWebRequest.Get(allItemsApiUrl);
+        UserData userData = new UserData
+        {
+            userAddress = walletAddress.Address
+        };
+
+        string jsonData = JsonUtility.ToJson(userData);
+        UnityWebRequest request = Post(allItemsApiUrl, jsonData);
         yield return request.SendWebRequest();
 
         if (request.result != UnityWebRequest.Result.Success)
@@ -84,7 +102,13 @@ public class FetchNFTData : MonoBehaviour
 
     private IEnumerator IE_FetchUserItem(Action<List<NFTItem>> callback)
     {
-        UnityWebRequest request = UnityWebRequest.Get(userApiUrl);
+        UserData userData = new UserData
+        {
+            userAddress = walletAddress.Address
+        };
+
+        string jsonData = JsonUtility.ToJson(userData);
+        UnityWebRequest request = Post(userApiUrl, jsonData);
         yield return request.SendWebRequest();
         
         if (request.result != UnityWebRequest.Result.Success)
@@ -129,4 +153,10 @@ public class NFTItem
     public string price_klay;
     public string metadata_uri;
     public int remaining_time;
+}
+
+[Serializable]
+public class UserData
+{
+    public string userAddress;
 }

@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class KlipLoginUI : MonoBehaviour
+public class KlipLogin : MonoBehaviour
 {
     private string _requestKey = "";
 

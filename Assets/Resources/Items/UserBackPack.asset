@@ -12,14 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27eea18fd6974f739570d2f8b17a8a06, type: 3}
   m_Name: UserBackPack
   m_EditorClassIdentifier: 
-  items:
-  - TokenId: 1
-    Data: {fileID: 11400000, guid: 6d95710c0c5c6d54bbf0053af88668a4, type: 2}
-    ItemPrice: 0
-    SellerWalletAddress: 
-    LeftSeconds: 3
-  - TokenId: 2
-    Data: {fileID: 11400000, guid: f72079adc96b94f4fa147ee46f9708aa, type: 2}
-    ItemPrice: 0
-    SellerWalletAddress: 
-    LeftSeconds: 2
+  items: []
