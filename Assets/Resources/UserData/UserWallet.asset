@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc7ca1f2903d45d19226230488282e94, type: 3}
   m_Name: UserWallet
   m_EditorClassIdentifier: 
-  walletAddress: 0xD5972Cfd8fACCc833331B904AbD399197A96d60C
+  walletAddress: 0xf87bFD1e2DD38EDaf0FE922D9AE0ecF8873C2d62

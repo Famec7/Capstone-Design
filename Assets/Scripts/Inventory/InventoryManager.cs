@@ -152,7 +152,7 @@ public class InventoryManager : Singleton<InventoryManager>
     {
         foreach (var item in _backpackDatabase.Items)
         {
-            // Todo: 아이템을 슬롯에 추가하는 로직
+            AddItem(item.Data);
         }
     }
 }
