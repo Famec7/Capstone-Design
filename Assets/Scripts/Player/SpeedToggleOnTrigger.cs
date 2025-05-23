@@ -13,7 +13,9 @@ public class SpeedToggleOnTrigger : MonoBehaviour
     public float BoostMultiplier = 2f;     
 
     private float _originalSpeed;    
-    private bool _isBoosted = false; 
+    private bool _isBoosted = false;
+
+    public MovementSFXPlayer MovementSFXPlayer;
 
     void Awake()
     {
@@ -45,6 +47,7 @@ public class SpeedToggleOnTrigger : MonoBehaviour
             MoveProvider.moveSpeed = _originalSpeed * BoostMultiplier;
             StatusManager.Instance.IsRunning = true;
             _isBoosted = true;
+            MovementSFXPlayer.playInterval = 0.25f;
         }
     }
 
@@ -56,6 +59,7 @@ public class SpeedToggleOnTrigger : MonoBehaviour
             MoveProvider.moveSpeed = _originalSpeed;
             StatusManager.Instance.IsRunning = false;
             _isBoosted = false;
+            MovementSFXPlayer.playInterval = 0.5f;
         }
     }
 }
