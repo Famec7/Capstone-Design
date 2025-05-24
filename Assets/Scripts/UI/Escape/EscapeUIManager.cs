@@ -18,6 +18,9 @@ public class EscapeUIManager : MonoBehaviour
 
     int currentWood, currentStone;
 
+    public GameObject ConfirmPannel;
+
+
     void Awake()
     {
         Instance = this;
@@ -48,6 +51,7 @@ public class EscapeUIManager : MonoBehaviour
         if (currentWood >= requiredWood && currentStone >= requiredStone)
         {
             Debug.Log("모든 재료가 모였습니다! 탈출(수리) 처리 실행");
+            ConfirmPannel.gameObject.SetActive(true);
         }
     }
 }
