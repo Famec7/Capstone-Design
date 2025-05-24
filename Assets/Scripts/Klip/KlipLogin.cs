@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class KlipLogin : MonoBehaviour
 {
@@ -89,6 +90,7 @@ public class KlipLogin : MonoBehaviour
                     case "completed":
                         qrCodeImage.ClearQRCode();
                         walletAddress.Address = response.result.klaytn_address;
+                        SceneManager.LoadScene("MapScene");
                         yield break;
                     case "canceled":
                         qrCodeImage.ClearQRCode();

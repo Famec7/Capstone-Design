@@ -18,6 +18,7 @@ MonoBehaviour:
   ItemType: 0
   ItemValue: 40
   ItemIcon: {fileID: 21300000, guid: 67788177fef4c7345ba666513086da83, type: 3}
+  URL: ipfs://bafkreibjxbz5rk6pvczmxuupmwwtdilt4ygrfxd5nb2zaqkwjxov7pklcy
   ItemModel: {fileID: 8010904881565926004, guid: 38c8e93fabc5887448f6592869f6799c, type: 3}
   AttackPower: 0
   IsNFT: 1

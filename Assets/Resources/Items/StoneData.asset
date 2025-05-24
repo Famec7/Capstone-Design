@@ -18,6 +18,7 @@ MonoBehaviour:
   ItemType: 3
   ItemValue: 2
   ItemIcon: {fileID: 21300000, guid: 4a317ce3420038943a615b79d64d010d, type: 3}
+  URL: 
   ItemModel: {fileID: 0}
   AttackPower: 0
-  IsNFT: 1
+  IsNFT: 0
