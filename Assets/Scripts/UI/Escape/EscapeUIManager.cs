@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EscapeUIManager : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class EscapeUIManager : MonoBehaviour
     int currentWood, currentStone;
 
     public GameObject ConfirmPannel;
+    public GameObject CrashBoat;
+    public GameObject PropBoat;
 
 
     void Awake()
@@ -53,5 +56,16 @@ public class EscapeUIManager : MonoBehaviour
             Debug.Log("모든 재료가 모였습니다! 탈출(수리) 처리 실행");
             ConfirmPannel.gameObject.SetActive(true);
         }
+    }
+
+    public void OnClick()
+    {
+        CrashBoat.gameObject.SetActive(false);
+        PropBoat.gameObject.SetActive(true);
+        ConfirmPannel.gameObject.SetActive(false);
+        uiRoot.gameObject.SetActive(false);
+
+        InventoryManager.Instance.SaveInventory();
+        SceneManager.LoadScene("CabinScene");
     }
 }
