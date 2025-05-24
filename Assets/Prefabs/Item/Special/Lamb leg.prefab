@@ -281,7 +281,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data: {fileID: 11400000, guid: 3747bd43ecf9b1e46a5a49d5e1e00015, type: 2}
   IsInInventory: 0
-  Type: 0
+  Type: 1
 --- !u!64 &5168793482840556216
 MeshCollider:
   m_ObjectHideFlags: 0

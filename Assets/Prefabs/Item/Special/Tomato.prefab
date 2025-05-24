@@ -302,7 +302,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data: {fileID: 11400000, guid: d99827dee63bb7441815111f5bbe4520, type: 2}
   IsInInventory: 0
-  Type: 0
+  Type: 1
 --- !u!1 &4097352932977124571
 GameObject:
   m_ObjectHideFlags: 0

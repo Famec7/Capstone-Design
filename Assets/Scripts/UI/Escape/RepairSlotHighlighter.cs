@@ -57,6 +57,8 @@ public class RepairSlotHighlighter : MonoBehaviour
             col.isTrigger = true;
 
         SetNormal();
+
+        EscapeUIManager.Instance.RegisterMaterial(requiredType, itemIcon.sprite);
     }
 
     private void OnTriggerEnter(Collider other)

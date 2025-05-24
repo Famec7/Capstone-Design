@@ -272,7 +272,9 @@ public class MonsterAI : MonoBehaviour
         {
             if (Physics.Raycast(origin, flatDir.normalized, out RaycastHit hit, sightDistance))
             {
-                bool isPlayer = hit.collider.CompareTag("Player");
+                bool isPlayer = false;
+                if (hit.collider.gameObject == gameObject)
+                     isPlayer = hit.collider.CompareTag("Player");
                 Color rayColor = isPlayer ? Color.green : Color.red;
 
                 Debug.DrawRay(origin, flatDir.normalized * sightDistance, rayColor, 0.1f);

@@ -45,7 +45,7 @@ public class MeleeWeapon : MonoBehaviour
             if (dot <= ChoppingAngleThreshold && _angularSpeed >= AngularSpeedThreshold)
             {
                 harvestable.Chop(_data.AttackPower);
-                harvestable.SetRandomPos();
+                //harvestable.SetRandomPos();
 #if UNITY_EDITOR
                 Debug.Log($"{gameObject.name}이(가) {collider.gameObject.name}에 공격 실행! dot: {dot:F2}, 각속도: {_angularSpeed:F1}°/s");
 #endif

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -31,6 +32,26 @@ public class EscapeUIManager : MonoBehaviour
     }
 
     public void ShowUI(bool show) => uiRoot.SetActive(show);
+
+    public void Start()
+    {
+        foreach(var slot in woodSlots)
+        {
+            slot.itemIcon.sprite = slot.itemIcon.sprite;
+            slot.itemIcon.color = Color.white;
+            currentWood++;
+        }
+
+        foreach (var slot in stoneSlots)
+        {
+            slot.itemIcon.sprite = slot.itemIcon.sprite;
+            slot.itemIcon.color = Color.white;
+            currentStone++;
+        }
+
+        CheckComplete();
+        OnClick();
+    }
 
     public void RegisterMaterial(MaterialType type, Sprite icon)
     {
