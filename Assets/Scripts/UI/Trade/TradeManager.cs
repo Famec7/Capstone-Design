@@ -54,7 +54,10 @@ public class TradeManager : Singleton<TradeManager>
             CategoryButtons[i].onClick.AddListener(() => { FilterByItemType((ItemType)index); });
         }
         CategoryButtons[CategoryButtons.Length - 1].onClick.AddListener(() => { ShowAllItems(); });
+    }
 
+    private void Start()
+    {
         fetchNFTData.OnNFTDataLoaded = (items) =>
         {
             TradeItemDataList trades = new TradeItemDataList();
@@ -123,10 +126,11 @@ public class TradeManager : Singleton<TradeManager>
     {
         int startIndex = pageIndex * PreviewCounts;
         if (startIndex >= _currentDisplayItems.Count)
-        {
+        {   
             Debug.LogWarning("해당 페이지에 표시할 데이터가 없습니다.");
             return;
         }
+        
         for (int i = 0; i < ItemPreviews.Length; i++)
         {
             int dataIndex = startIndex + i;
@@ -240,5 +244,15 @@ public class TradeManager : Singleton<TradeManager>
             CategoryButtons[i].image.color = new Color32(0, 0, 0, 50);
         }
         CategoryButtons[CategoryButtons.Length - 1].image.color = new Color32(0, 0, 0, 200);
+    }
+
+    private void OnEnable()
+    {
+        fetchNFTData.LoadNFTData();
+    }
+
+    public void Load()
+    {
+        fetchNFTData.LoadNFTData();
     }
 }

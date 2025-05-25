@@ -11,6 +11,7 @@ public class InventoryManager : Singleton<InventoryManager>
 
     public InventorySlot[] Slots => _slots; // 읽기 전용 프로퍼티
 
+    [SerializeField]
     private InventoryDatabase _backpackDatabase;
 
     protected override void Init()

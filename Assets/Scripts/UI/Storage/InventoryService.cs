@@ -38,6 +38,16 @@ public class InventoryService
 
     public void Load(List<NFTItem> items)
     {
+        if (items == null || items.Count == 0)
+        {
+#if UNITY_EDITOR
+            Debug.LogWarning("No items to load");
+#endif
+            return;
+        }
+        
+        Storage.Clear();
+        
         foreach (var item in items)
         {
             var tradeItem = new TradeItemData()

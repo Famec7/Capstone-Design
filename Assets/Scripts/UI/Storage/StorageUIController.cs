@@ -18,82 +18,58 @@ public class StorageUIController : MonoBehaviour
     private InventoryService _service = null;
 
     # region UI View
-    
-    [Header("UI View")]
-    [SerializeField]
-    private StorageSlotView slotPrefab;
-    
-    [SerializeField]
-    private StorageDetailView detailView;
-    
-    [SerializeField]
-    private CategoryTabView[] categoryTabs;
-    
+
+    [Header("UI View")] [SerializeField] private StorageSlotView slotPrefab;
+
+    [SerializeField] private StorageDetailView detailView;
+
+    [SerializeField] private CategoryTabView[] categoryTabs;
+
     # endregion
-    
+
     # region UI 요소
-    
-    [Header("UI 요소")]
-    [SerializeField]
-    private TMP_Dropdown sortDropdown;
-    
-    [SerializeField]
-    private Button sortOrderButton;
-    
-    [SerializeField]
-    private Toggle deleteToggle;
-    
-    [SerializeField]
-    private Button addButton;
-    
-    [SerializeField]
-    private Button prevButton;
-    
-    [SerializeField]
-    private Button nextButton;
-    
-    [SerializeField]
-    private TextMeshProUGUI pageText;
-    
-    [SerializeField]
-    private Button sellButton;
-    
-    [SerializeField]
-    private InputField sellPriceInputField;
-    
+
+    [Header("UI 요소")] [SerializeField] private TMP_Dropdown sortDropdown;
+
+    [SerializeField] private Button sortOrderButton;
+
+    [SerializeField] private Toggle deleteToggle;
+
+    [SerializeField] private Button addButton;
+
+    [SerializeField] private Button prevButton;
+
+    [SerializeField] private Button nextButton;
+
+    [SerializeField] private TextMeshProUGUI pageText;
+
+    [SerializeField] private Button sellButton;
+
+    [SerializeField] private InputField sellPriceInputField;
+
     # endregion
-    
+
     # region Slot 부모
-    
-    [Header("슬롯 부모")]
-    [SerializeField]
-    private Transform slotParent;
-    
-    [SerializeField]
-    private Transform backpackSlotParent;
-    
+
+    [Header("슬롯 부모")] [SerializeField] private Transform slotParent;
+
+    [SerializeField] private Transform backpackSlotParent;
+
     # endregion
-    
+
     # region 팝업 UI
-    
-    [Header("판매 완료 팝업")]
-    [SerializeField]
-    private AutoHidePopup sellCompletePopup;
-    
-    [Header("가격 오류 팝업")]
-    [SerializeField]
-    private AutoHidePopup priceErrorPopup;
-    
+
+    [Header("판매 완료 팝업")] [SerializeField] private AutoHidePopup sellCompletePopup;
+
+    [Header("가격 오류 팝업")] [SerializeField] private AutoHidePopup priceErrorPopup;
+
     # endregion
-    
-    [Header("Page 하나 당 아이템 수")]
-    [SerializeField]
+
+    [Header("Page 하나 당 아이템 수")] [SerializeField]
     private int pageSize = 20;
-    
-    [Header("중계 서버")]
-    [SerializeField]
-    private FetchNFTData fetchNFTData;
-    
+
+    [Header("중계 서버")] [SerializeField] private FetchNFTData fetchNFTData;
+
     private bool _isDeleteMode = false;
     private bool _isSortAscending = true;
     private ItemType _currentItemType = ItemType.None;
@@ -110,12 +86,11 @@ public class StorageUIController : MonoBehaviour
     private void Start()
     {
         Bind();
-        fetchNFTData.FetchUserNFTData(
-            items =>
-            {
-                _service.Load(items);
-                Refresh();
-            });
+        fetchNFTData.FetchUserNFTData(items =>
+        {
+            _service.Load(items);
+            Refresh();
+        });
     }
 
     /// <summary>
@@ -131,27 +106,27 @@ public class StorageUIController : MonoBehaviour
                 Refresh();
             });
         }
-        
+
         sortDropdown.onValueChanged.AddListener(value =>
         {
             _currentSortType = (SortType)value;
             Refresh();
         });
-        
+
         sortOrderButton.onClick.AddListener(() =>
         {
             _isSortAscending = !_isSortAscending;
             Refresh();
         });
-        
+
         deleteToggle.onValueChanged.AddListener(isOn =>
         {
             _isDeleteMode = isOn;
-            deleteToggle.image.color = _isDeleteMode ? Color.red : Color.white; 
+            deleteToggle.image.color = _isDeleteMode ? Color.red : Color.white;
         });
 
 
-        if (addButton)
+        /*if (addButton)
         {
             addButton.onClick.AddListener(() =>
             {
@@ -165,24 +140,24 @@ public class StorageUIController : MonoBehaviour
                         OnBackpackSlotClicked(itemData);
                         Destroy(slot.gameObject);
                     });
+                    
+                    Refresh();
                 }
-
-                Refresh();
             });
-        }
+        }*/
 
         if (sellButton)
         {
             sellButton.onClick.AddListener(() =>
             {
-                if (detailView.gameObject.activeSelf)
+                TradeItemData itemData = detailView.CurrentItemData;
+                
+                if (itemData != null)
                 {
-                    TradeItemData itemData = detailView.CurrentItemData;
-                    
-                    if (float.TryParse( sellPriceInputField.text, out float price))
+                    if (float.TryParse(sellPriceInputField.text, out float price))
                     {
                         itemData.ItemPrice = float.Parse(sellPriceInputField.text);
-                        NFTManager.Instance.ListNFT(itemData.TokenId, itemData.ItemPrice);
+                        NFTManager.Instance.ListNFT(itemData.TokenId, price);
                         _service.DeleteItem(itemData);
                         Refresh();
                         sellCompletePopup.ShowPopup();
@@ -194,13 +169,13 @@ public class StorageUIController : MonoBehaviour
                 }
             });
         }
-        
+
         prevButton.onClick.AddListener(() =>
         {
             _service.PreviousPage();
             Refresh();
         });
-        
+
         nextButton.onClick.AddListener(() =>
         {
             _service.NextPage(_currentItemType, _currentSortType, _isSortAscending);
@@ -216,16 +191,16 @@ public class StorageUIController : MonoBehaviour
         ClearSlots();
 
         var items = _service.GetCurrentPageItems(_currentItemType, _currentSortType, _isSortAscending);
-        
+
         foreach (var item in items)
         {
             CreateSlot(item);
         }
-        
+
         pageText.text = $"{_service.CurrentPage} / {_service.TotalPages}";
         prevButton.gameObject.SetActive(_service.HasPreviousPage());
         nextButton.gameObject.SetActive(_service.HasNextPage(_currentItemType, _currentSortType, _isSortAscending));
-        
+
         detailView.Hide();
     }
 
@@ -236,12 +211,12 @@ public class StorageUIController : MonoBehaviour
             Destroy(slot.gameObject);
         }
     }
-    
+
     private void CreateSlot(TradeItemData itemData)
     {
         var slot = Instantiate(slotPrefab, slotParent);
         slot.Bind(itemData, OnSlotClicked);
-            
+
         slot.name = itemData.Data.name;
     }
 
@@ -257,7 +232,7 @@ public class StorageUIController : MonoBehaviour
             detailView.Show(itemData);
         }
     }
-    
+
     private void OnBackpackSlotClicked(TradeItemData itemData)
     {
         _service.MoveToStorage(itemData);
@@ -271,11 +246,10 @@ public class StorageUIController : MonoBehaviour
 
     private void OnEnable()
     {
-        fetchNFTData.FetchUserNFTData(
-            items =>
-            {
-                _service.Load(items);
-                Refresh();
-            });
+        fetchNFTData.FetchUserNFTData(items =>
+        {
+            _service.Load(items);
+            Refresh();
+        });
     }
 }

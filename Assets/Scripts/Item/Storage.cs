@@ -23,4 +23,9 @@ public class Storage : IItemContainer
 
         _items.Remove(item);
     }
+    
+    public void Clear()
+    {
+        _items.Clear();
+    }
 }

@@ -38,6 +38,8 @@ public class AutoHidePopup : MonoBehaviour
     /// </summary>
     public void ShowPopup()
     {
+        gameObject.SetActive(true);
+        
         StopAllCoroutines();
         StartCoroutine(IE_FadeIn());
     }

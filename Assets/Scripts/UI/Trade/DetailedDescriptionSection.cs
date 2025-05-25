@@ -13,6 +13,10 @@ public class DetailedDescriptionSection : MonoBehaviour
     public TextMeshProUGUI DescriptionText;
     public TextMeshProUGUI CategoryText;
     public Button BuyButton;
+    
+    [SerializeField]
+    private KlipRequest KlipRequest;
+    
     #endregion
 
     public void SetDetailedDescriptionSection(TradeItemData Data)
@@ -24,9 +28,22 @@ public class DetailedDescriptionSection : MonoBehaviour
         BuyButton.gameObject.SetActive(true);
 
         NameText.text = Data.Data.ItemName;
-        // 임시
-        DescriptionText.text = "Detailed Description";
+        DescriptionText.text = Data.Data.ItemDescription;
         CategoryText.text = Data.Data.ItemType.ToString();
+        ItemImage.sprite = Data.Data.ItemIcon;
+        
+        BuyButton.onClick.RemoveAllListeners();
+        
+        KlipRequest.OnRequestCompleted = () =>
+        {
+            TradeManager.Instance.Load();
+            TradeManager.Instance.DetailedDescriptionSection.gameObject.SetActive(false);
+        };
+        
+        BuyButton.onClick.AddListener(() =>
+        {
+            NFTManager.Instance.BuyNFT(Data.TokenId, KlipRequest);
+        });
     }
 
     public void SetDetailedDescriptionSection(ItemData Data)
@@ -37,8 +54,8 @@ public class DetailedDescriptionSection : MonoBehaviour
         CategoryText.gameObject.SetActive(true);
 
         NameText.text = Data.ItemName;
-        // 임시
         DescriptionText.text = Data.ItemDescription;
         CategoryText.text = Data.ItemType.ToString();
+        ItemImage.sprite = Data.ItemIcon;
     }
 }
