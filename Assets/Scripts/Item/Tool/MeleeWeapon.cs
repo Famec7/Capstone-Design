@@ -74,4 +74,34 @@ public class MeleeWeapon : MonoBehaviour
         return false;
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log(collision);
+        HarvestableObject harvestable = collision.gameObject.GetComponent<HarvestableObject>();
+
+
+        if (harvestable != null)
+        {
+            if (HasAttackIgnoreObject(harvestable.HarvestData)) return;
+
+            float dot = Mathf.Abs(Vector3.Dot(transform.up, Vector3.down));
+
+          
+                harvestable.Chop(_data.AttackPower);
+                //harvestable.SetRandomPos();
+#if UNITY_EDITOR
+                Debug.Log($"{gameObject.name}이(가) {collision.gameObject.name}에 공격 실행! dot: {dot:F2}, 각속도: {_angularSpeed:F1}°/s");
+#endif
+        }
+        else
+        {
+            IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+          
+                damageable.TakeDamage(_data.AttackPower);
+#if UNITY_EDITOR
+                Debug.Log($"{gameObject.name}이(가) {collision.gameObject.name}에 일반 공격 실행! 각속도: {_angularSpeed:F1}°/s");
+#endif
+        }
+    }
+   
 }

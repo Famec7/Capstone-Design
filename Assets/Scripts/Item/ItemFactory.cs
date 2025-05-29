@@ -56,4 +56,11 @@ public class ItemFactory : Singleton<ItemFactory>
             _pool.Enqueue(item);
         }
     }
+
+    public BaseItem CreateItem(int index)
+    {
+        // 2. 풀에서 찾지 못했으므로, ItemList에서 해당 프리팹을 찾음
+        GameObject item = Instantiate(ItemList[index]);
+        return item.GetComponent<BaseItem>();
+    }
 }
