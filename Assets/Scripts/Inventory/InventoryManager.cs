@@ -130,6 +130,9 @@ public class InventoryManager : Singleton<InventoryManager>
             if (slot.IsEmpty)
                 continue;
 
+            if (slot.Data.IsNFT == false)
+                continue;
+
             TradeItemData itemData = null;
 
             NFTManager.Instance.MintNFT(slot.Data.ItemId, (item) =>
@@ -138,7 +141,7 @@ public class InventoryManager : Singleton<InventoryManager>
                 {
                     TokenId = item.token_id,
                     Data = slot.Data,
-                    ItemPrice = float.Parse(item.price_klay),
+                    ItemPrice = 0.0f,
                     SellerWalletAddress = item.seller,
                     LeftSeconds = item.remaining_time,
                 };

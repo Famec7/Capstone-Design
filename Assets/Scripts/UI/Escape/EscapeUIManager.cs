@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -35,11 +36,17 @@ public class EscapeUIManager : MonoBehaviour
 
     public void Start()
     {
-        foreach(var slot in woodSlots)
+        int i = 0;
+        int j = 0;
+        foreach (var slot in woodSlots)
         {
             slot.itemIcon.sprite = slot.itemIcon.sprite;
             slot.itemIcon.color = Color.white;
+            i++;
             currentWood++;
+
+            if (i == woodSlots.Count - 1)
+                break;
         }
 
         foreach (var slot in stoneSlots)
@@ -47,10 +54,13 @@ public class EscapeUIManager : MonoBehaviour
             slot.itemIcon.sprite = slot.itemIcon.sprite;
             slot.itemIcon.color = Color.white;
             currentStone++;
+            j++;
+            if (j == woodSlots.Count - 1)
+                break;
         }
 
         CheckComplete();
-        OnClick();
+        //OnClick();
     }
 
     public void RegisterMaterial(MaterialType type, Sprite icon)
@@ -83,10 +93,14 @@ public class EscapeUIManager : MonoBehaviour
     {
         CrashBoat.gameObject.SetActive(false);
         PropBoat.gameObject.SetActive(true);
-        ConfirmPannel.gameObject.SetActive(false);
-        uiRoot.gameObject.SetActive(false);
+        StartCoroutine(Wait());
+    }
 
+    IEnumerator Wait()
+    {
         InventoryManager.Instance.SaveInventory();
+        yield return new WaitForSeconds(3f);
         SceneManager.LoadScene("CabinScene");
+
     }
 }

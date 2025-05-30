@@ -66,7 +66,7 @@ public class GameTimeManager : MonoBehaviour
     void UpdateGameTime()
     {
         float gameSecondsPerRealSecond = secondsInGameDay / realSecondsPerGameDay;
-        currentGameTimeSeconds += gameSecondsPerRealSecond * 10;
+        currentGameTimeSeconds += gameSecondsPerRealSecond;
 
         RotateSkyboxAndLighting();
         CheckPhaseChange();

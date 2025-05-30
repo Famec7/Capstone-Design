@@ -3373,6 +3373,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4527288318230386286, guid: 0bc64c0a4091fae46bb1a8c43190bb8f, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6592929003713661436, guid: 0bc64c0a4091fae46bb1a8c43190bb8f, type: 3}
       propertyPath: m_Name
       value: --XR_Managers--
@@ -3417,22 +3421,69 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4527288318230386286, guid: 0bc64c0a4091fae46bb1a8c43190bb8f, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7322621724395589768, guid: 0bc64c0a4091fae46bb1a8c43190bb8f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1836137445}
   m_SourcePrefab: {fileID: 100100000, guid: 0bc64c0a4091fae46bb1a8c43190bb8f, type: 3}
 --- !u!114 &1836137443 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4412276887406388556, guid: 0bc64c0a4091fae46bb1a8c43190bb8f, type: 3}
   m_PrefabInstance: {fileID: 1836137442}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1836137444}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 03a5df2202a8b96488c744be3bd0c33e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1836137444 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7322621724395589768, guid: 0bc64c0a4091fae46bb1a8c43190bb8f, type: 3}
+  m_PrefabInstance: {fileID: 1836137442}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1836137445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1836137444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 919e39492806b334982b6b84c90dd927, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_System: {fileID: 1836137443}
+  m_TurnSpeed: 60
+  m_LeftHandTurnAction:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Left Hand Turn
+      m_Type: 0
+      m_ExpectedControlType: Vector2
+      m_Id: df555494-fd3b-426d-b17a-a4fc4b2fae0d
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  m_RightHandTurnAction:
+    m_UseReference: 1
+    m_Action:
+      m_Name: Right Hand Turn
+      m_Type: 0
+      m_ExpectedControlType: Vector2
+      m_Id: 8c88ee0b-f992-45b9-b83a-76504e161da0
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: -6493913391331992944, guid: c348712bda248c246b8c49b3db54643f, type: 3}
 --- !u!1001 &1909593176
 PrefabInstance:
   m_ObjectHideFlags: 0
